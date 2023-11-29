@@ -11,6 +11,8 @@ from arguments import get_args
 from env_config import show_config, get_config
 
 
+# TEST FOR PYCHARM AND GITHUB
+
 def print_obs(obs_table):
     rows = len(obs_table)
     index = ["car-0"]
