@@ -57,7 +57,7 @@ def get_config(argus):
         "screen_height": 350,  # [px]
         "centering_position": [0.3, 0.5],
         "scaling": 5.5,
-        "show_trajectories": False,
+        "show_trajectories": True,
         "render_agent": True,
         "offscreen_rendering": False
     }

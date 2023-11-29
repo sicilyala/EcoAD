@@ -11,8 +11,6 @@ from arguments import get_args
 from env_config import show_config, get_config
 
 
-# TEST FOR PYCHARM AND GITHUB
-
 def print_obs(obs_table):
     rows = len(obs_table)
     index = ["car-0"]
@@ -66,6 +64,8 @@ if __name__ == '__main__':
     log_dir = "./EcoHighway_DRL/"
     if not os.path.exists(log_dir):
         os.mkdir(log_dir)
+    if args.lateral_control:
+        args.log_dir += "_Lateral"
     if args.ems_flag:
         args.log_dir += "_EMS"
     log_dir += args.log_dir

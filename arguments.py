@@ -5,7 +5,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='environment and algorithm')
     # environment configuration
     parser.add_argument('--action_continuity', default=True, type=lambda x: x.lower() == 'true', help='Action type')
-    parser.add_argument('--lateral_control', default=True, type=lambda x: x.lower() == 'true', help='activate lateral action')
+    parser.add_argument('--lateral_control', default=False, type=lambda x: x.lower() == 'true', help='activate lateral action')
     parser.add_argument('--ems_flag', default=True, type=lambda x: x.lower() == 'true', help='activate EMS,True of False')
     parser.add_argument('--max_spd', default=25, type=float)
 
