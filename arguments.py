@@ -16,15 +16,16 @@ def get_args():
     parser.add_argument('--batch_size', default=32, type=int, help='batch_size')
     parser.add_argument('--tau', default=0.005, type=float, help='tau')
     parser.add_argument('--gamma', default=0.995, type=float, help='discount rate')
-    parser.add_argument('--total_time_steps', default=20, type=int,
+    parser.add_argument('--device', default='auto', type=str, help="auto, cuda, cpu")
+    parser.add_argument('--total_time_steps', default=2000, type=int,
                         help="the total number of samples (env steps) to train on")
-    parser.add_argument('--learning_starts', default=10, type=int,
+    parser.add_argument('--learning_starts', default=100, type=int,
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     parser.add_argument('--train_freq', default=1, type=int, help='train_freq')
     parser.add_argument('--gradient_steps', default=1, type=int, help='gradient_steps')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
-    parser.add_argument('--evaluation_steps', default=2, type=int,
+    parser.add_argument('--evaluation_steps', default=100, type=int,
                         help="the total number of env steps evaluate")
 
     args = parser.parse_args()

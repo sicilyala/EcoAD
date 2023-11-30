@@ -4,7 +4,9 @@ import pandas as pd
 import gymnasium as gym
 from matplotlib import pyplot as plt
 from stable_baselines3 import DQN, DDPG
-from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
+from stable_baselines3.common.noise import NormalActionNoise
+from tqdm import tqdm
+import time
 
 from highway_env import register_highway_envs
 from arguments import get_args
@@ -14,8 +16,8 @@ from env_config import show_config, get_config
 def print_obs(obs_table):
     rows = len(obs_table)
     index = ["car-0"]
-    for i in range(1, rows - 1):
-        index.append("car-%d" % i)
+    for ii in range(1, rows - 1):
+        index.append("car-%d" % ii)
     if config["action"]["ems_flag"]:
         index.append("ems-obs")
     else:
@@ -29,6 +31,8 @@ def print_obs(obs_table):
 
 
 def print_info(info_dict):
+    show_key = ['collision_reward', 'on_road_reward', 'right_lane_reward', 'high_speed_reward', 'EMS_reward',
+                'SOC', 'SOH', 'FCS_SOH', 'P_mot']
     sn = 60
     print("\nInformation Table")
     print("*" * sn)
@@ -36,9 +40,10 @@ def print_info(info_dict):
         if type(value) is dict:
             print("\n*****%s sub-table*****" % key)
             for key1, value1 in value.items():
-                print("{}, {}".format(key1, value1))
+                if key1 in show_key:
+                    print("{}: {}".format(key1, value1))
         else:
-            print("{}, {}".format(key, value))
+            print("{}: {}".format(key, value))
     print("*" * sn)
 
 
@@ -52,14 +57,14 @@ if __name__ == '__main__':
     # env = gym.make('EcoAD-v0', render_mode='rgb_array')    # can't pass [config] to [env] immediately
     # 第一次定义无法将config传入env env.env.configure(config)
     obs, info = env.reset()
-    print("\n----------Training Stage----------")
+    print("\n----------Reset Before Training----------")
     print_obs(obs)
     print_info(info)
     show_config(config)
     print('observation_space: ', env.observation_space)
     print('action_space: ', env.action_space)
     print('----------------------------------\n')
-
+    print("\n----------Training started at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     # DRL agent learning
     log_dir = "./EcoHighway_DRL/"
     if not os.path.exists(log_dir):
@@ -86,7 +91,7 @@ if __name__ == '__main__':
                          # replay_buffer_kwargs=env,        # ?
                          verbose=2,  # info output
                          seed=args.seed,
-                         device='auto',
+                         device=args.device,
                          # _init_setup_model=False,
                          tensorboard_log=log_dir)
         DRL_agent.learn(total_timesteps=args.total_time_steps)
@@ -108,7 +113,7 @@ if __name__ == '__main__':
                         gradient_steps=args.gradient_steps,
                         target_update_interval=5,
                         verbose=2,
-                        device='auto',
+                        device=args.device,
                         tensorboard_log=log_dir)
         DRL_agent.learn(total_timesteps=args.total_time_steps)
         DRL_agent.save(log_dir + "/dqn_model")
@@ -116,11 +121,13 @@ if __name__ == '__main__':
         DRL_agent = DQN.load(log_dir + "/dqn_model")
 
     # evaluation
-    print("\n----------Validating Stage----------")
+    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    print("\n----------Start Evaluating----------")
     _, _ = env.reset()
-    for _ in range(args.evaluation_steps):
+    for i in tqdm(range(args.evaluation_steps)):
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
+        print("\n[Evaluation Step %d]: " % i)
         print_obs(obs)
         print_info(info)
         env.render()
