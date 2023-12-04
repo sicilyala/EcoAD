@@ -1,6 +1,5 @@
 import os
-import numpy as np
-import pandas as pd
+import numpy as np 
 import gymnasium as gym
 from matplotlib import pyplot as plt
 from stable_baselines3 import DQN, DDPG
@@ -11,40 +10,7 @@ import time
 from highway_env import register_highway_envs
 from arguments import get_args
 from env_config import show_config, get_config
-
-
-def print_obs(obs_table):
-    rows = len(obs_table)
-    index = ["car-0"]
-    for ii in range(1, rows - 1):
-        index.append("car-%d" % ii)
-    if config["action"]["ems_flag"]:
-        index.append("ems-obs")
-    else:
-        index.append("car-%d" % (rows - 1))
-    obs_pd = pd.DataFrame(obs_table, index=index, columns=config["observation"]["features"])
-    sn = 62
-    print("\nObservation Table")
-    print("*" * sn)
-    print(obs_pd)
-    print("*" * sn)
-
-
-def print_info(info_dict):
-    show_key = ['collision_reward', 'on_road_reward', 'right_lane_reward', 'high_speed_reward', 'EMS_reward',
-                'SOC', 'SOH', 'FCS_SOH', 'P_mot']
-    sn = 60
-    print("\nInformation Table")
-    print("*" * sn)
-    for key, value in info_dict.items():
-        if type(value) is dict:
-            print("\n*****%s sub-table*****" % key)
-            for key1, value1 in value.items():
-                if key1 in show_key:
-                    print("{}: {}".format(key1, value1))
-        else:
-            print("{}: {}".format(key, value))
-    print("*" * sn)
+from utils import print_info, print_obs
 
 
 if __name__ == '__main__':
@@ -58,7 +24,7 @@ if __name__ == '__main__':
     # 第一次定义无法将config传入env env.env.configure(config)
     obs, info = env.reset()
     print("\n----------Reset Before Training----------")
-    print_obs(obs)
+    print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
     print_info(info)
     show_config(config)
     print('observation_space: ', env.observation_space)
@@ -128,7 +94,7 @@ if __name__ == '__main__':
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
         print("\n[Evaluation Step %d]: " % i)
-        print_obs(obs)
+        print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
         print_info(info)
         env.render()
         if terminated or truncated:
