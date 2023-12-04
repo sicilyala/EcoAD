@@ -14,13 +14,12 @@ if __name__=='__main__':
     args = get_args()
     config = get_config(args)
     env = gym.make('EcoAD-v0', render_mode='rgb_array', config=config) 
-    dir_name = "test_EMS/DDPG_1"
+    dir_name = "test_EMS"
     log_dir = "./EcoHighway_DRL/" + dir_name
-
-    
+    # replay the vedio
     print("\n----------Start Evaluating----------")
     DRL_agent = DDPG.load(log_dir + "/model")
-    _, _ = env.reset()
+    obs, info = env.reset()
     for i in tqdm(range(args.evaluation_steps)):
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)

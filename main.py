@@ -1,11 +1,11 @@
 import os
-import numpy as np 
+import time
+import numpy as np
 import gymnasium as gym
 from matplotlib import pyplot as plt
 from stable_baselines3 import DQN, DDPG
 from stable_baselines3.common.noise import NormalActionNoise
 from tqdm import tqdm
-import time
 
 from highway_env import register_highway_envs
 from arguments import get_args

@@ -1,4 +1,4 @@
-
+""" define configurations"""
 def get_config(argus):
     ActionContinuity = argus.action_continuity
     LateralControl = argus.lateral_control
