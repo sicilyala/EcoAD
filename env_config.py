@@ -78,7 +78,7 @@ if __name__ == '__main__':
     import sys
     from arguments import get_args
     sys.modules["gym"] = gym
-
+    print("what happened?")
     args = get_args()
     config = get_config(args)
     env = gym.make('highway-v0')
@@ -86,4 +86,4 @@ if __name__ == '__main__':
     env.configure(config)
     obs, info = env.reset()
     print(obs)
-    # env.render()
+    #env.render()
