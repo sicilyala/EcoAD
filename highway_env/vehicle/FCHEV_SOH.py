@@ -24,7 +24,7 @@ class FCHEV_SOH:
         # self.I_max = 20*self.Q_batt  # Battery current limitation
     
     def _func_init(self):
-        data_dir = "E:/SEUgo/ECO_AD/FCHEV_power_data/"  # car data from BIT
+        data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
         # fuel cell engine
         data = scio.loadmat(data_dir+'P_fc.mat')
         P_fc = data['P_fc'][0]   # attention: kW

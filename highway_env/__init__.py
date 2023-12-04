@@ -13,7 +13,7 @@ def register_highway_envs():
         id='EcoAD-v0',
         entry_point='highway_env.envs:EcoADEnv',
     )
-
+    print("here is in ./highway_env/__init__.py::register_highway_envs()")
     # exit_env.py
     register(
         id='exit-v0',
