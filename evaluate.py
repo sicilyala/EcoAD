@@ -1,3 +1,5 @@
+import sys 
+import argparse 
 import gymnasium as gym
 from stable_baselines3 import DDPG
 from tqdm import tqdm
@@ -10,15 +12,16 @@ from utils import print_obs, print_info
 
 
 if __name__=='__main__':
+    print("Command line arguments: ", sys.argv) 
+    # env config
     register_highway_envs()
     args = get_args()
     config = get_config(args)
-    env = gym.make('EcoAD-v0', render_mode='rgb_array', config=config) 
-    dir_name = "test_EMS"
-    log_dir = "./EcoHighway_DRL/" + dir_name
+    env = gym.make('EcoAD-v0', render_mode='rgb_array', config=config)  
+    log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"
     # replay the vedio
     print("\n----------Start Evaluating----------")
-    DRL_agent = DDPG.load(log_dir + "/model")
+    DRL_agent = DDPG.load(log_dir + args.model_name + "-%s" % args.model_time)
     obs, info = env.reset()
     for i in tqdm(range(args.evaluation_steps)):
         action, _ = DRL_agent.predict(obs, deterministic=True)

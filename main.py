@@ -61,11 +61,11 @@ if __name__ == '__main__':
                          # _init_setup_model=False,
                          tensorboard_log=log_dir)
         DRL_agent.learn(total_timesteps=args.total_time_steps)
-        DRL_agent.save(log_dir + "/model")
-        # remove to demonstrate saving and loading
+        now = time.localtime()        
+        DRL_agent.save(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now)) 
         del DRL_agent
-        # Load and test saved model
-        DRL_agent = DDPG.load(log_dir + "/model")
+        # Load and test the saved model
+        DRL_agent = DDPG.load(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
     else:
         DRL_agent = DQN(policy='MlpPolicy', env=env,
                         policy_kwargs=dict(net_arch=[256, 256]),
@@ -82,20 +82,21 @@ if __name__ == '__main__':
                         device=args.device,
                         tensorboard_log=log_dir)
         DRL_agent.learn(total_timesteps=args.total_time_steps)
-        DRL_agent.save(log_dir + "/dqn_model")
+        now = time.localtime()         
+        DRL_agent.save(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
         del DRL_agent
-        DRL_agent = DQN.load(log_dir + "/dqn_model")
-
-    # evaluation
-    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        DRL_agent = DQN.load(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
+    
+    # evaluation  
+    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))  
     print("\n----------Start Evaluating----------")
     _, _ = env.reset()
     for i in tqdm(range(args.evaluation_steps)):
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
-        print("\n[Evaluation Step %d]: " % i)
-        print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
-        print_info(info)
+        # print("\n[Evaluation Step %d]: " % i)
+        # print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
+        # print_info(info)
         env.render()
         if terminated or truncated:
             _, _ = env.reset()

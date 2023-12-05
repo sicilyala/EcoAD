@@ -25,8 +25,13 @@ def get_args():
     parser.add_argument('--gradient_steps', default=1, type=int, help='gradient_steps')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
+    
+    # for evaluation
     parser.add_argument('--evaluation_steps', default=100, type=int,
                         help="the total number of env steps evaluate")
+    parser.add_argument('--dir_name', default="test_EMS", type=str)
+    parser.add_argument('--model_name', default="ddpg-model", type=str, help='dqn-model')
+    parser.add_argument('--model_time', default='', type=str)
 
     args = parser.parse_args()
     return args
