@@ -10,7 +10,7 @@ from tqdm import tqdm
 from highway_env import register_highway_envs
 from arguments import get_args
 from env_config import show_config, get_config
-from utils import print_info, print_obs
+from utils import print_info, print_obs, linear_schedule, triangular_schedule, triangular2_schedule
 
 
 if __name__ == '__main__':
@@ -43,24 +43,26 @@ if __name__ == '__main__':
     if config["ActionContinuity"]:
         DRL_agent = DDPG(policy='MlpPolicy', env=env,
                          policy_kwargs=dict(net_arch=args.net_arch),
-                         learning_rate=args.LR,
+                         learning_rate=linear_schedule(initial_value=args.LR),
                          buffer_size=args.buffer_size,
-                         learning_starts=args.learning_starts,
+                         learning_starts=args.learning_starts,                         
                          batch_size=args.batch_size,
                          tau=args.tau,
                          gamma=args.gamma,
                          train_freq=args.train_freq,
                          gradient_steps=args.gradient_steps,
                          action_noise=NormalActionNoise(np.zeros(config["action"]["action_dim"]),
-                                                        np.zeros(config["action"]["action_dim"]) + 0.5),
-                         # replay_buffer_class='HerReplayBuffer',
-                         # replay_buffer_kwargs=env,        # ?
+                                                        np.zeros(config["action"]["action_dim"]) + 0.5),    
+                                                        # TODO action-noise std, how to degenerate
+                         # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
+                         # replay_buffer_kwargs=env,        # 
                          verbose=2,  # info output
                          seed=args.seed,
-                         device=args.device,
+                         device=args.device,                         
+                         tensorboard_log=log_dir,
                          # _init_setup_model=False,
-                         tensorboard_log=log_dir)
-        DRL_agent.learn(total_timesteps=args.total_time_steps)
+                         )
+        DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
         now = time.localtime()        
         DRL_agent.save(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now)) 
         del DRL_agent

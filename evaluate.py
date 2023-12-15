@@ -1,5 +1,4 @@
-import sys 
-import argparse 
+import sys  
 import gymnasium as gym
 from stable_baselines3 import DDPG
 from tqdm import tqdm
