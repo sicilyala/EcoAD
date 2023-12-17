@@ -18,19 +18,23 @@ def linear_schedule(initial_value: float) -> Callable[[float], float]:
     return func
 
 
-def triangular_schedule(initial_value: float) -> Callable[[float], float]:
+def triangular2_schedule(max_LR: float, min_LR: float) -> Callable[[float], float]:
     
     def func(progress_remaining: float) -> float:
-        
-        return progress_remaining * initial_value
+        now_progress = 1.0 - progress_remaining 
+        d, m = divmod(now_progress, 0.2)
+        max_LR = max_LR * pow(0.5, d)
+        y = min_LR + (max_LR-min_LR)/0.1 * (0.1-abs(m-0.1))  
+        return y
     return func
 
 
-def triangular2_schedule(initial_value: float) -> Callable[[float], float]:
+def triangular_schedule(max_LR: float, min_LR: float) -> Callable[[float], float]:
     
     def func(progress_remaining: float) -> float:
-        
-        return progress_remaining * initial_value
+        now_progress = 1.0 - progress_remaining
+        y = min_LR + (max_LR-min_LR)/0.1 * (0.1-abs((now_progress%0.2)-0.1))        
+        return y
     return func
 
 
