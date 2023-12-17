@@ -1,6 +1,6 @@
 import argparse
 
-
+ 
 def get_args():
     parser = argparse.ArgumentParser(description='environment and algorithm')
     # environment configuration
@@ -11,15 +11,19 @@ def get_args():
 
     # DRL method parameters
     parser.add_argument('--net_arch', default=[256, 128, 64], type=list, help='policy net arch')
-    parser.add_argument('--LR', default=1e-3, type=float, help='learning_rate')
-    parser.add_argument('--buffer_size', default=1000, type=int, help='buffer_size')
+    parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
+    parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
     parser.add_argument('--batch_size', default=64, type=int, help='batch_size')
     parser.add_argument('--tau', default=0.001, type=float, help='tau')
     parser.add_argument('--gamma', default=0.99, type=float, help='discount rate')
     parser.add_argument('--device', default='auto', type=str, help="auto, cuda, cpu")
+    parser.add_argument('--noise', default=0.15, type=float, help='std of Gaussian noise')
+
+    parser.add_argument('--buffer_size', default=1000, type=int, help='buffer_size')
     parser.add_argument('--total_time_steps', default=5000, type=int,
                         help="the total number of samples (env steps) to train on")
-    parser.add_argument('--learning_starts', default=128, type=int,
+    
+    parser.add_argument('--learning_starts', default=200, type=int,
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     parser.add_argument('--train_freq', default=1, type=int, help='Update the model every ``train_freq`` steps')
     parser.add_argument('--gradient_steps', default=-1, type=int, help='Set to ``-1`` means to do as many gradient steps as steps during the rollout')

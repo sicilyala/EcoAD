@@ -10,8 +10,8 @@ from tqdm import tqdm
 from highway_env import register_highway_envs
 from arguments import get_args
 from env_config import show_config, get_config
-from utils import print_info, print_obs, linear_schedule, triangular_schedule, triangular2_schedule
-
+from utils import print_info, print_obs, triangular_schedule, triangular2_schedule
+ 
 
 if __name__ == '__main__':
     args = get_args()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     if config["ActionContinuity"]:
         DRL_agent = DDPG(policy='MlpPolicy', env=env,
                          policy_kwargs=dict(net_arch=args.net_arch),
-                         learning_rate=linear_schedule(initial_value=args.LR),
+                         learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),
                          buffer_size=args.buffer_size,
                          learning_starts=args.learning_starts,                         
                          batch_size=args.batch_size,
@@ -52,8 +52,10 @@ if __name__ == '__main__':
                          train_freq=args.train_freq,
                          gradient_steps=args.gradient_steps,
                          action_noise=NormalActionNoise(np.zeros(config["action"]["action_dim"]),
-                                                        np.zeros(config["action"]["action_dim"]) + 0.5),    
-                                                        # TODO action-noise std, how to degenerate
+                                                        np.zeros(config["action"]["action_dim"]) 
+                                                        + args.noise),    
+                         # TODO action-noise std, how to degenerate? seems impossible?
+                         # off_policy_algorithm: L398
                          # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
                          # replay_buffer_kwargs=env,        # 
                          verbose=2,  # info output
