@@ -7,7 +7,7 @@ def get_args():
     parser.add_argument('--action_continuity', default=True, type=lambda x: x.lower() == 'true', help='Action type')
     parser.add_argument('--lateral_control', default=False, type=lambda x: x.lower() == 'true', help='activate lateral action')
     parser.add_argument('--ems_flag', default=True, type=lambda x: x.lower() == 'true', help='activate EMS,True of False')
-    parser.add_argument('--max_spd', default=25, type=float)
+    parser.add_argument('--max_spd', default=30, type=float)
 
     # DRL method parameters
     parser.add_argument('--net_arch', default=[256, 128, 64], type=list, help='policy net arch')
@@ -20,7 +20,7 @@ def get_args():
     parser.add_argument('--noise', default=0.15, type=float, help='std of Gaussian noise')
 
     parser.add_argument('--buffer_size', default=1000, type=int, help='buffer_size')
-    parser.add_argument('--total_time_steps', default=5000, type=int,
+    parser.add_argument('--total_time_steps', default=5200, type=int,
                         help="the total number of samples (env steps) to train on")
     
     parser.add_argument('--learning_starts', default=200, type=int,

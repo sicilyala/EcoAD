@@ -169,33 +169,7 @@ class ContinuousAction(ActionType):
                 "acceleration": utils.lmap(action[0], [-1, 1], self.acceleration_range),
                 "steering": 0,
                 "engine_power": 0
-            })
-
-        # if self.EMS_flag:
-        #     self.controlled_vehicle.act({
-        #         "acceleration": utils.lmap(action[0], [-1, 1], self.acceleration_range),
-        #         "steering": utils.lmap(action[1], [-1, 1], self.steering_range),
-        #         "engine_power": utils.lmap(action[2], [-1, 1], self.engine_power_range)     # 0.5 -> 30 kw
-        #     })
-        # else:
-        #     if self.longitudinal and self.lateral:
-        #         self.controlled_vehicle.act({
-        #             "acceleration": utils.lmap(action[0], [-1, 1], self.acceleration_range),
-        #             "steering": utils.lmap(action[1], [-1, 1], self.steering_range),
-        #             "engine_power": 0
-        #         })
-        #     elif self.longitudinal:
-        #         self.controlled_vehicle.act({
-        #             "acceleration": utils.lmap(action[0], [-1, 1], self.acceleration_range),
-        #             "steering": 0,
-        #             "engine_power": 0
-        #         })
-        #     elif self.lateral:
-        #         self.controlled_vehicle.act({
-        #             "acceleration": 0,
-        #             "steering": utils.lmap(action[0], [-1, 1], self.steering_range),
-        #             "engine_power": 0
-        #         })
+            })           
 
         self.last_action = action
 

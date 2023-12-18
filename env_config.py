@@ -9,7 +9,7 @@ def get_config(argus):
         "envname": 'cwqaq-ecoad',
         "observation": {
             "type": "Kinematics",
-            "vehicles_count": 6,  # Number of observed vehicles
+            "vehicles_count": 5,  # Number of observed vehicles
             "features": ["presence", "x", "y", "vx", "vy", "cos_h", "sin_h"],
             "ems_features": (['SOC', 'SOH_FCS', 'SOH_BAT', 'P_FCS', 'P_req'] if EMS_flag else []),
             # len(ems_features) must less than len(features)
@@ -37,19 +37,19 @@ def get_config(argus):
             "action_dim": int(1 + LateralControl + EMS_flag)},
         # reward
         "normalize_reward": False,
+        "reward_speed_range": [MAX_SPD-5, MAX_SPD],
         "collision_reward": -1,  # The reward received when colliding with a vehicle.
         "on_road_reward": 1.0,  # True of False
         "lane_change_reward": 0,  # The reward received at each lane change action.
         "right_lane_reward": 0.1,  # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
-        "high_speed_reward": 0.4,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
-        "reward_speed_range": [20, 30],
-        "EMS_reward": 10.0,     # it's actually the weight coefficient
+        "high_speed_reward": 1.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
+        "EMS_reward": 1.0,     # it's actually the weight coefficient
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
-        "vehicles_density": 1,
-        "vehicles_count": 100,
-        "initial_spacing": 2,
+        "vehicles_density": 10,
+        "vehicles_count": 500,
+        "initial_spacing": 3,
         "duration": 400,  # [s]
         "simulation_frequency": 15,  # [Hz]
         "policy_frequency": 1,  # [Hz]
