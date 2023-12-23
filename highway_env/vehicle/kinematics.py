@@ -155,6 +155,7 @@ class Vehicle(RoadObject):
         self.action['acceleration'] = float(self.action['acceleration'])
         self.action['steering'] = float(self.action['steering'])
         self.action['engine_power'] = float(self.action['engine_power'])
+        # TODO what about if no ems-action?
         if self.speed > self.MAX_SPEED:
             self.action['acceleration'] = min(self.action['acceleration'], 1.0 * (self.MAX_SPEED - self.speed))
         elif self.speed < self.MIN_SPEED:

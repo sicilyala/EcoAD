@@ -47,10 +47,10 @@ def get_config(argus):
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
-        "vehicles_density": 10,
+        "vehicles_density": 1.5,
         "vehicles_count": 500,
         "initial_spacing": 3,
-        "duration": 400,  # [s]
+        "duration": 100,  # [s]
         "simulation_frequency": 15,  # [Hz]
         "policy_frequency": 1,  # [Hz]
         "screen_width": 600,  # [px]
@@ -75,15 +75,34 @@ def show_config(configs):
 
 if __name__ == '__main__':
     import gymnasium as gym
-    import sys
+    from tqdm import tqdm
+    from matplotlib import pyplot as plt
+    from stable_baselines3 import DQN, DDPG
+    from highway_env import register_highway_envs
     from arguments import get_args
-    sys.modules["gym"] = gym
-    print("what happened?")
-    args = get_args()
-    config = get_config(args)
-    env = gym.make('highway-v0')
+    from env_config import show_config, get_config
 
-    env.configure(config)
-    obs, info = env.reset()
-    print(obs)
-    #env.render()
+
+    args = get_args()
+    args.action_continuity = True
+    args.lateral_control = False
+    args.ems_flag = True
+    config = get_config(args) 
+    config["lanes_count"] = 3 
+    config["vehicles_density"] = 2 
+    config["vehicles_count"] = 500  
+
+    register_highway_envs() 
+    env = gym.make('EcoAD-v0', render_mode='rgb_array', config=config)
+
+    obs, info = env.reset() 
+    for i in tqdm(range(100)):
+        # action, _ = DRL_agent.predict(obs, deterministic=True)
+        action = env.action_type.actions_indexes["IDLE"]
+        obs, reward, terminated, truncated, info = env.step(action) 
+        env.render()
+        if terminated or truncated:
+            _, _ = env.reset()
+
+    plt.imshow(env.render())
+    plt.show()

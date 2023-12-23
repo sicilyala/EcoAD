@@ -21,8 +21,8 @@ if __name__=='__main__':
     # replay the vedio
     print("\n----------Start Evaluating----------")
     DRL_agent = DDPG.load(log_dir + args.model_name + "-%s" % args.model_time)
-    obs, info = env.reset()
-    for i in tqdm(range(args.evaluation_steps)):
+    obs, info = env.reset() 
+    for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
         print("\n[Evaluation Step %d]: " % i)

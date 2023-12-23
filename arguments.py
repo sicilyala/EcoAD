@@ -5,12 +5,12 @@ def get_args():
     parser = argparse.ArgumentParser(description='environment and algorithm')
     # environment configuration
     parser.add_argument('--action_continuity', default=True, type=lambda x: x.lower() == 'true', help='Action type')
-    parser.add_argument('--lateral_control', default=False, type=lambda x: x.lower() == 'true', help='activate lateral action')
+    parser.add_argument('--lateral_control', default=True, type=lambda x: x.lower() == 'true', help='activate lateral action')
     parser.add_argument('--ems_flag', default=True, type=lambda x: x.lower() == 'true', help='activate EMS,True of False')
     parser.add_argument('--max_spd', default=30, type=float)
 
     # DRL method parameters
-    parser.add_argument('--net_arch', default=[256, 128, 64], type=list, help='policy net arch')
+    parser.add_argument('--net_arch', default=[256, 128], type=list, help='policy net arch')
     parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
     parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
     parser.add_argument('--batch_size', default=64, type=int, help='batch_size')
@@ -19,8 +19,8 @@ def get_args():
     parser.add_argument('--device', default='auto', type=str, help="auto, cuda, cpu")
     parser.add_argument('--noise', default=0.15, type=float, help='std of Gaussian noise')
 
-    parser.add_argument('--buffer_size', default=1000, type=int, help='buffer_size')
-    parser.add_argument('--total_time_steps', default=5200, type=int,
+    parser.add_argument('--buffer_size', default=2000, type=int, help='buffer_size')
+    parser.add_argument('--total_time_steps', default=10200, type=int,
                         help="the total number of samples (env steps) to train on")
     
     parser.add_argument('--learning_starts', default=200, type=int,
@@ -31,7 +31,7 @@ def get_args():
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
     
     # for evaluation
-    parser.add_argument('--evaluation_steps', default=10, type=int,
+    parser.add_argument('--evaluation_episodes', default=5, type=int,
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_EMS", type=str)
     parser.add_argument('--model_name', default="ddpg-model", type=str, help='dqn-model')

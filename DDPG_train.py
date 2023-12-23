@@ -3,7 +3,7 @@ import time
 import numpy as np
 import gymnasium as gym
 from matplotlib import pyplot as plt
-from stable_baselines3 import DQN, DDPG
+from stable_baselines3 import DDPG
 from stable_baselines3.common.noise import NormalActionNoise
 from tqdm import tqdm
 
@@ -40,7 +40,12 @@ if __name__ == '__main__':
     if args.ems_flag:
         args.log_dir += "_EMS"
     log_dir += args.log_dir
-    if config["ActionContinuity"]:
+
+    try:
+        config["ActionContinuity"] is True
+    except TypeError:
+        print("DDPG action space should be continuous")
+    else:  
         DRL_agent = DDPG(policy='MlpPolicy', env=env,
                          policy_kwargs=dict(net_arch=args.net_arch),
                          learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),
@@ -70,32 +75,12 @@ if __name__ == '__main__':
         del DRL_agent
         # Load and test the saved model
         DRL_agent = DDPG.load(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-    else:
-        DRL_agent = DQN(policy='MlpPolicy', env=env,
-                        policy_kwargs=dict(net_arch=[256, 256]),
-                        learning_rate=5e-4,
-                        buffer_size=15000,
-                        learning_starts=args.learning_starts,
-                        # how many steps of the model to collect transitions for before learning starts
-                        batch_size=args.batch_size,
-                        gamma=0.95,
-                        train_freq=args.train_freq,
-                        gradient_steps=args.gradient_steps,
-                        target_update_interval=5,
-                        verbose=2,
-                        device=args.device,
-                        tensorboard_log=log_dir)
-        DRL_agent.learn(total_timesteps=args.total_time_steps)
-        now = time.localtime()         
-        DRL_agent.save(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-        del DRL_agent
-        DRL_agent = DQN.load(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-    
+
     # evaluation  
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))  
     print("\n----------Start Evaluating----------")
     _, _ = env.reset()
-    for i in tqdm(range(args.evaluation_steps)):
+    for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
         # print("\n[Evaluation Step %d]: " % i)
