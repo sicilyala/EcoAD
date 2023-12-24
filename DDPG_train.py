@@ -31,7 +31,7 @@ if __name__ == '__main__':
     print('action_space: ', env.action_space)
     print('----------------------------------\n')
     print("\n----------Training started at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-    # DRL agent learning
+    # dir 
     log_dir = "./EcoHighway_DRL/"
     if not os.path.exists(log_dir):
         os.mkdir(log_dir)
@@ -40,43 +40,36 @@ if __name__ == '__main__':
     if args.ems_flag:
         args.log_dir += "_EMS"
     log_dir += args.log_dir
-
-    try:
-        config["ActionContinuity"] is True
-    except TypeError:
-        print("DDPG action space should be continuous")
-    else:  
-        DRL_agent = DDPG(policy='MlpPolicy', env=env,
-                         policy_kwargs=dict(net_arch=args.net_arch),
-                         learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),
-                         buffer_size=args.buffer_size,
-                         learning_starts=args.learning_starts,                         
-                         batch_size=args.batch_size,
-                         tau=args.tau,
-                         gamma=args.gamma,
-                         train_freq=args.train_freq,
-                         gradient_steps=args.gradient_steps,
-                         action_noise=NormalActionNoise(np.zeros(config["action"]["action_dim"]),
-                                                        np.zeros(config["action"]["action_dim"]) 
-                                                        + args.noise),    
-                         # TODO action-noise std, how to degenerate? seems impossible?
-                         # off_policy_algorithm: L398
-                         # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
-                         # replay_buffer_kwargs=env,        # 
-                         verbose=2,  # info output
-                         seed=args.seed,
-                         device=args.device,                         
-                         tensorboard_log=log_dir,
-                         # _init_setup_model=False,
-                         )
-        DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
-        now = time.localtime()        
-        DRL_agent.save(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now)) 
-        del DRL_agent
-        # Load and test the saved model
-        DRL_agent = DDPG.load(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-
-    # evaluation  
+    # DRL agent learning
+    DRL_agent = DDPG(policy='MlpPolicy', env=env,
+                        policy_kwargs=dict(net_arch=args.net_arch),
+                        learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),
+                        buffer_size=args.buffer_size,
+                        learning_starts=args.learning_starts,                         
+                        batch_size=args.batch_size,
+                        tau=args.tau,
+                        gamma=args.gamma,
+                        train_freq=args.train_freq,
+                        gradient_steps=args.gradient_steps,
+                        action_noise=NormalActionNoise(np.zeros(config["action"]["action_dim"]),
+                                                    np.zeros(config["action"]["action_dim"]) 
+                                                    + args.noise),    
+                        # TODO action-noise std, how to degenerate? seems impossible?
+                        # off_policy_algorithm: L398
+                        # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
+                        # replay_buffer_kwargs=env,        # 
+                        verbose=2,  # info output
+                        seed=args.seed,
+                        device=args.device,                         
+                        tensorboard_log=log_dir,
+                        # _init_setup_model=False,
+                        )
+    DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
+    now = time.localtime()          
+    DRL_agent.save(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now)) 
+    del DRL_agent
+    # evaluation: Load and test the saved model
+    DRL_agent = DDPG.load(log_dir + "/ddpg-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))  
     print("\n----------Start Evaluating----------")
     _, _ = env.reset()

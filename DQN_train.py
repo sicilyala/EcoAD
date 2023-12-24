@@ -38,33 +38,28 @@ if __name__ == '__main__':
     if args.ems_flag:
         args.log_dir += "_EMS"
     log_dir += args.log_dir
-
-    try:
-        config["ActionContinuity"] is False
-    except TypeError:
-        print("DQN action space should be discrete")
-    else: 
-        DRL_agent = DQN(policy='MlpPolicy', env=env,
-                        policy_kwargs=dict(net_arch=[256, 256]),
-                        learning_rate=5e-4,
-                        buffer_size=15000,
-                        learning_starts=args.learning_starts,
-                        # how many steps of the model to collect transitions for before learning starts
-                        batch_size=args.batch_size,
-                        gamma=0.95,
-                        train_freq=args.train_freq,
-                        gradient_steps=args.gradient_steps,
-                        target_update_interval=5,
-                        verbose=2,
-                        device=args.device,
-                        tensorboard_log=log_dir)
-        DRL_agent.learn(total_timesteps=args.total_time_steps)
-        now = time.localtime()         
-        DRL_agent.save(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-        del DRL_agent
-        DRL_agent = DQN.load(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
-    
+    # DRL agent learning   
+    DRL_agent = DQN(policy='MlpPolicy', env=env,
+                    policy_kwargs=dict(net_arch=[256, 256]),
+                    learning_rate=5e-4,
+                    buffer_size=15000,
+                    learning_starts=args.learning_starts,
+                    # how many steps of the model to collect transitions for before learning starts
+                    batch_size=args.batch_size,
+                    gamma=0.95,
+                    train_freq=args.train_freq,
+                    gradient_steps=args.gradient_steps,
+                    target_update_interval=5,
+                    verbose=2,
+                    device=args.device,
+                    tensorboard_log=log_dir)
+    DRL_agent.learn(total_timesteps=args.total_time_steps)
+    now = time.localtime()         
+    DRL_agent.save(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
     # evaluation  
+    del DRL_agent
+    DRL_agent = DQN.load(log_dir + "/dqn-model-%s" % time.strftime("%Y-%m-%d-%H:%M", now))
+    
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))  
     print("\n----------Start Evaluating----------")
     _, _ = env.reset()

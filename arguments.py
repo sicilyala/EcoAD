@@ -33,8 +33,8 @@ def get_args():
     # for evaluation
     parser.add_argument('--evaluation_episodes', default=5, type=int,
                         help="the total number of env steps evaluate")
-    parser.add_argument('--dir_name', default="test_EMS", type=str)
-    parser.add_argument('--model_name', default="ddpg-model", type=str, help='dqn-model')
+    parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
+    parser.add_argument('--model_name', default="ddpg", type=str, help='dqn, ddpg, sac')
     parser.add_argument('--model_time', default='', type=str)
 
     args = parser.parse_args()

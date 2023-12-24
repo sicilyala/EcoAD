@@ -133,4 +133,6 @@ class EcoADEnv(AbstractEnv):
 
     def _is_truncated(self) -> bool:
         """The episode is truncated if the time limit is reached."""
+        # TODO 
+        
         return self.time >= self.config["duration"]
