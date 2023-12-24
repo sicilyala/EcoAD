@@ -49,7 +49,8 @@ if __name__ == '__main__':
                     train_freq=args.train_freq,
                     gradient_steps=args.gradient_steps,      
                     # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
-                    # replay_buffer_kwargs=env,        # 
+                    # replay_buffer_kwargs=env,        
+                    # TODO entropy-related parameters 
                     verbose=2,  # info output
                     seed=args.seed,
                     device=args.device,                         

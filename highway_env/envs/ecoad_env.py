@@ -132,7 +132,5 @@ class EcoADEnv(AbstractEnv):
                 self.config["offroad_terminal"] and not self.vehicle.on_road)
 
     def _is_truncated(self) -> bool:
-        """The episode is truncated if the time limit is reached."""
-        # TODO 
-        
+        """The episode is truncated if the time limit is reached.""" 
         return self.time >= self.config["duration"]

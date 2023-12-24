@@ -1,3 +1,6 @@
+import numpy as np 
+
+
 """ define configurations"""
 def get_config(argus):
     ActionContinuity = argus.action_continuity
@@ -29,8 +32,8 @@ def get_config(argus):
             "type": "ContinuousAction" if ActionContinuity else "DiscreteMetaAction",
             "acceleration_range": [-2.0, 2.0],  # m/s2
             "speed_range": [-MAX_SPD, MAX_SPD],  # m/s
-            "steering_range": None,
             "lateral": LateralControl,
+            "steering_range": [-np.pi / 4, np.pi / 4],  # rad
             "ems_flag": EMS_flag,
             "engine_power_range": [0, 60],  # kW
             # "dynamical": False,      # # False for Vehicle, True for BicycleVehicle (with tire friction and slipping)
@@ -40,6 +43,7 @@ def get_config(argus):
         "reward_speed_range": [MAX_SPD-5, MAX_SPD],
         "collision_reward": -1,  # The reward received when colliding with a vehicle.
         "on_road_reward": 1.0,  # True of False
+        "offroad_terminal": True, # activate off-road terminal 
         "lane_change_reward": 1.0,  # The reward received at each lane change action.
         "right_lane_reward": 0.1,  # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
         "high_speed_reward": 1.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].

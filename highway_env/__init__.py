@@ -5,15 +5,15 @@ from gymnasium.envs.registration import register
 
 
 def register_highway_envs():
-    """Import the envs module so that envs register themselves."""
+    """Import the envs module so that envs register themselves.""" 
     
-    # the eco-ad environment developed by cwq
-    # ecoad_env.py
+    # ecoad_env.py: the eco-ad environment developed by cwq
     register(
         id='EcoAD-v0',
         entry_point='highway_env.envs:EcoADEnv',
     )
-    print("here is in ./highway_env/__init__.py::register_highway_envs()")
+    # print("here is in ./highway_env/__init__.py::register_highway_envs()")
+
     # exit_env.py
     register(
         id='exit-v0',

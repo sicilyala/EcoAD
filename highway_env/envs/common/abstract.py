@@ -250,6 +250,7 @@ class AbstractEnv(gym.Env):
         if self.render_mode == 'human':
             self.render()
 
+        # TODO new_obs, rewards, dones, infos = env.step(actions)
         return obs, reward, terminated, truncated, info
 
     def _simulate(self, action: Optional[Action] = None) -> None:
