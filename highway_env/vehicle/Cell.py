@@ -6,6 +6,7 @@ an electro-thermal-aging model
 import math
 import pickle
 from scipy.interpolate import interp1d
+import sys
 
 
 class CellModel_1:
@@ -153,7 +154,10 @@ class CellModel_2:
         Ic_rate = [0.5, 2, 6, 10]
         Bc_data = [31630, 21681, 12934, 15512]
         self.Bc_func = interp1d(Ic_rate, Bc_data, kind='linear', fill_value='extrapolate')
-        data_dir = "/home/seu/cwqaq/FCHEV_power_data/"
+        if sys.platform == 'win32':
+            data_dir = "E:/SEUgo/ECO_AD/FCHEV_power_data/"
+        else:            
+            data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
         self.ocv_func = pickle.load(open(data_dir+'ocv.pkl', 'rb'))
 
     def run_cell(self, P_batt, paras_list):

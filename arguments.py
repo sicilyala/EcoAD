@@ -7,9 +7,10 @@ def get_args():
     parser.add_argument('--action_continuity', default=True, type=lambda x: x.lower() == 'true', help='Action type')
     parser.add_argument('--lateral_control', default=True, type=lambda x: x.lower() == 'true', help='activate lateral action')
     parser.add_argument('--ems_flag', default=True, type=lambda x: x.lower() == 'true', help='activate EMS,True of False')
-    parser.add_argument('--max_spd', default=30, type=float)
+    parser.add_argument('--max_spd', default=30, type=float, help='m/s')
 
     # DRL method parameters
+    parser.add_argument('--features_dim', default=128, type=int, help="1st layer of 'net_arch' fully connected layer")   
     parser.add_argument('--net_arch', default=[256, 128], type=list, help='policy net arch')
     parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
     parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
@@ -31,7 +32,7 @@ def get_args():
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
     
     # for evaluation
-    parser.add_argument('--evaluation_episodes', default=5, type=int,
+    parser.add_argument('--evaluation_episodes', default=10, type=int,
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
     parser.add_argument('--model_name', default="ddpg", type=str, help='dqn, ddpg, sac')

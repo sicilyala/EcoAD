@@ -51,6 +51,9 @@ def get_config(argus):
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
+        "lane_start": 0,
+        "lane_length": 20000,
+        "road_spd_limit": MAX_SPD,      # m/s 
         "vehicles_density": 1.5,
         "vehicles_count": 500,
         "initial_spacing": 3,

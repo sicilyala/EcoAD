@@ -63,8 +63,23 @@ class EcoADEnv(AbstractEnv):
 
     def _create_road(self) -> None:
         """Create a road composed of straight adjacent lanes."""
-        self.road = Road(network=RoadNetwork.straight_road_network(self.config["lanes_count"], speed_limit=30),
-                         np_random=self.np_random, record_history=self.config["show_trajectories"])
+        self.road = Road(network=RoadNetwork.straight_road_network(lanes=self.config["lanes_count"],
+                                                                   start=self.config["lane_start"],
+                                                                   length=self.config["lane_length"],
+                                                                   speed_limit=self.config["road_spd_limit"]), 
+                                                                   np_random=self.np_random, 
+                                                                   record_history=self.config["show_trajectories"])
+        self.lanes_list = self.road.network.lanes_list()
+        self.lanes_centers = {}     # 
+        for lane in self.lanes_list:            
+            lane_width = lane.width_at(lane.start)
+            # print(lane_width)
+            lane_id = self.road.network.get_closest_lane_index(lane.start)[2] 
+            lane_center = (0.5+lane_id)*lane_width
+            self.lanes_centers.update({lane_id: lane_center}) 
+            # print('lane {}, center at {}, start at {}, end at {}'.format(lane_id, lane_center, lane.start, lane.end))
+        # print(self.lanes_centers)
+        # print(self.lanes_list)  
 
     def _create_vehicles(self) -> None:
         """Create some new random vehicles of a given type, and add them on the road."""
@@ -115,7 +130,7 @@ class EcoADEnv(AbstractEnv):
         # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
         forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
         scaled_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])
-
+        # TODO how to design centering reward ?
         rewards = {
                 "collision_reward": float(self.vehicle.crashed),  # True of False
                 "on_road_reward": float(self.vehicle.on_road),  # True of False

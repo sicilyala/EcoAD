@@ -167,7 +167,7 @@ class StraightLane(AbstractLane):
         self.end = np.array(end)
         self.width = width
         self.heading = np.arctan2(self.end[1] - self.start[1], self.end[0] - self.start[0])
-        self.length = np.linalg.norm(self.end - self.start)
+        self.length = np.linalg.norm(self.end - self.start) # the distance between two points 
         self.line_types = line_types or [LineType.STRIPED, LineType.STRIPED]
         self.direction = (self.end - self.start) / self.length
         self.direction_lateral = np.array([-self.direction[1], self.direction[0]])

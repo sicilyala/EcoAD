@@ -19,7 +19,7 @@ class Vehicle(RoadObject):
     Its state is propagated depending on its steering and acceleration actions.
     """
 
-    LENGTH = 6.0
+    LENGTH = 5.0
     """ Vehicle length [m] """
     WIDTH = 2.0
     """ Vehicle width [m] """

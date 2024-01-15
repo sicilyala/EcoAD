@@ -4,6 +4,7 @@
 import math
 from scipy.interpolate import interp1d, interp2d
 import scipy.io as scio
+import sys 
 
 
 class FCHEV_SOH:
@@ -23,8 +24,11 @@ class FCHEV_SOH:
         # self.C_batt = 111.5     # kWh, 176 Ah * 633.54 V / 1000 = 111.5 kWh
         # self.I_max = 20*self.Q_batt  # Battery current limitation
     
-    def _func_init(self):
-        data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
+    def _func_init(self): 
+        if sys.platform == 'win32':
+            data_dir = "E:/SEUgo/ECO_AD/FCHEV_power_data/"
+        else:            
+            data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
         # fuel cell engine
         data = scio.loadmat(data_dir+'P_fc.mat')
         P_fc = data['P_fc'][0]   # attention: kW
