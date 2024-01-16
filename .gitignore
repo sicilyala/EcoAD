@@ -1,10 +1,13 @@
 # ignore files listed below
 
+*.pyc
+/.vscode/
+/.idea/
+
+/highway_env/highway_env.egg-info/
 /EcoHighway_DRL/
-/test*
+test*
 /token.txt
 # /arguments.py
 # /env_config.py
-
-
 

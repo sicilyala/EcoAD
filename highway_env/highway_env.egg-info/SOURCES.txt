@@ -1,7 +1,0 @@
-README.md
-setup.py
-highway_env.egg-info/PKG-INFO
-highway_env.egg-info/SOURCES.txt
-highway_env.egg-info/dependency_links.txt
-highway_env.egg-info/requires.txt
-highway_env.egg-info/top_level.txt

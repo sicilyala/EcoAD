@@ -71,7 +71,7 @@ class EMS:
         obs[4] = self.P_batt / self.P_batt_max   # in W
         obs[5] = self.car_spd / self.abs_spd_MAX
         obs[6] = self.car_acc / self.abs_acc_MAX
-        print("[reset]: agentEMS.reset_obs()")
+        # print("[reset]: agentEMS.reset_obs()")
         return obs
 
     def execute(self, action, car_spd, car_acc):

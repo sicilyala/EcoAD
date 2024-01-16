@@ -8,9 +8,9 @@ from stable_baselines3.common.noise import NormalActionNoise
 from tqdm import tqdm
 
 from highway_env import register_highway_envs
-from arguments import get_args
-from env_config import show_config, get_config
-from utils import print_info, print_obs, triangular_schedule, triangular2_schedule
+from common.arguments import get_args
+from common.env_config import show_config, get_config
+from common.utils import print_info, print_obs, triangular_schedule, triangular2_schedule
  
 
 if __name__ == '__main__':

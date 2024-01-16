@@ -1,4 +1,4 @@
-import numpy as np 
+import math
 
 
 """ define configurations"""
@@ -33,7 +33,7 @@ def get_config(argus):
             "acceleration_range": [-2.0, 2.0],  # m/s2
             "speed_range": [-MAX_SPD, MAX_SPD],  # m/s
             "lateral": LateralControl,
-            "steering_range": [-np.pi / 4, np.pi / 4],  # rad
+            "steering_range": [-math.pi / 4, math.pi / 4],  # rad
             "ems_flag": EMS_flag,
             "engine_power_range": [0, 60],  # kW
             # "dynamical": False,      # # False for Vehicle, True for BicycleVehicle (with tire friction and slipping)
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plt
     from stable_baselines3 import DQN, DDPG
     from highway_env import register_highway_envs
-    from arguments import get_args
-    from env_config import show_config, get_config
+    from common.arguments import get_args
+    from common.env_config import show_config, get_config
 
 
     args = get_args()
