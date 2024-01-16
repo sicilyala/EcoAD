@@ -17,7 +17,7 @@ from CnnNetwork import CustomCNN
  
 
 if __name__ == '__main__':
-    print('platform: %s' % sys.platform)
+    print('[platform]: %s' % sys.platform)
     args = get_args()
     config = get_config(args)
     # register new environments

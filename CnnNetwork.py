@@ -47,12 +47,12 @@ class CustomCNN(BaseFeaturesExtractor):
                                     nn.ReLU())
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
-        # print(observations.shape)
-        # print(observations.ndim)
+        print(observations.shape)
+        print(observations.ndim)
         for _ in range(4-observations.ndim): 
             observations = observations.unsqueeze(0)
-        # print(observations.shape)
-        # print(observations.ndim)
+        print(observations.shape)
+        print(observations.ndim)
         return self.linear(self.cnn(observations))
 
 

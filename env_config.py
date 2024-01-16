@@ -58,7 +58,7 @@ def get_config(argus):
         "vehicles_count": 500,
         "initial_spacing": 3,
         "duration": 100,  # [s]
-        "simulation_frequency": 15,  # [Hz]
+        "simulation_frequency": 1,  # [Hz]
         "policy_frequency": 1,  # [Hz]
         "screen_width": 600,  # [px]
         "screen_height": 350,  # [px]
