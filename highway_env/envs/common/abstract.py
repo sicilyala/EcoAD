@@ -205,7 +205,7 @@ class AbstractEnv(gym.Env):
         :return: the observation of the reset state
         """
         super().reset(seed=seed, options=options)
-        print('abstract.py, L208, reset')
+        # print('abstract.py, L208, reset')
         if options and "config" in options:
             self.configure(options["config"])
         self.update_metadata()
@@ -238,7 +238,7 @@ class AbstractEnv(gym.Env):
         :param action: the action performed by the ego-vehicle
         :return: a tuple (observation, reward, terminated, truncated, info)
         """
-        print('abstract.py, L241, step')
+        # print('abstract.py, L241, step')
         if self.road is None or self.vehicle is None:
             raise NotImplementedError("The road and vehicle must be initialized in the environment implementation")
 
