@@ -87,9 +87,9 @@ if __name__ == '__main__':
     print("\n----------Start Evaluating----------")
     obs, info = env.reset()
     for i in tqdm(range(args.evaluation_episodes)):
-        action, _ = DRL_agent.predict(obs, deterministic=True) 
-        print('action: ', action, type(action), action.shape)
-        obs, reward, terminated, truncated, info = env.step(action)
+        action, _ = DRL_agent.predict(obs[np.newaxis, :], deterministic=True) 
+        # print('action: ', action, type(action), action.shape)
+        obs, reward, terminated, truncated, info = env.step(action[0])
         # print("\n[Evaluation Step %d]: " % i)
         # print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
         # print_info(info)

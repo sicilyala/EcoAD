@@ -17,7 +17,7 @@ class CustomCNN(BaseFeaturesExtractor):
         # Re-ordering will be done by pre-preprocessing or wrapper
         
         n_input_channels = observation_space.shape[0]   # for 2D input, in_channels==1  
-        # print(n_input_channels) # [6, 7]
+        # print(n_input_channels) # [7, 7]
         in_channels =1
         out_channels = 1
         # TODO how to initialize the kernel? how to decide the output channels?
@@ -47,39 +47,20 @@ class CustomCNN(BaseFeaturesExtractor):
                                     nn.ReLU())
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
-        print(observations.shape)
-        print(observations.ndim)
-        for _ in range(4-observations.ndim): 
-            observations = observations.unsqueeze(0)
-        print(observations.shape)
-        print(observations.ndim)
+        # print('CNN here')
+        # print(observations.shape)
+        # print(observations.ndim)
+        if observations.ndim == 3:
+        # for _ in range(4-observations.ndim): 
+            observations = observations.unsqueeze(dim=1) #  input shape: (x, y), to set input channel as 1 
+            # print(observations.shape)
+            # print(observations.ndim)
         return self.linear(self.cnn(observations))
 
 
 if __name__ == '__main__':       
-    ip = th.randn(5, 1, 6, 7)
+    ip = th.randn(1, 6, 7)
     print(ip)
-    in_channels =1
-    out_channels = 1
-    m1 = nn.Conv2d(in_channels=1, out_channels=1, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0))
-    m2 = nn.ReLU()
-    m3 = nn.Conv2d(in_channels=1, out_channels=2, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0))
-    m4 = nn.ReLU()
-    m5 = nn.MaxPool2d(kernel_size=(2, 2), stride=(1, 1))
-    m6 = nn.Flatten()
-    op = m1(ip)
-    print(op.size())
-    op = m2(op)
-    print(op.size())
-    op = m3(op)
-    print(op.size())
-    op = m4(op)
-    print(op.size())
-    op = m5(op)
-    print(op.size())
-    op = m6(op)
-    print(op.size())
-    print('ooooo')
     
     cnn_model = nn.Sequential(
         nn.Conv2d(in_channels=1, out_channels=1, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0)),
@@ -90,9 +71,8 @@ if __name__ == '__main__':
         nn.Flatten()
     )
     cp = cnn_model(ip)
-    print(cp.size())
+    print(cp.ndim)
     print(cp.shape)
-    
     
     mlp_model = nn.Sequential(
         nn.Linear(cp.shape[1], 128),

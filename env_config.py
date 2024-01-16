@@ -12,7 +12,7 @@ def get_config(argus):
         "envname": 'cwqaq-ecoad',
         "observation": {
             "type": "Kinematics",
-            "vehicles_count": 5,  # Number of observed vehicles
+            "vehicles_count": 6,  # Number of observed vehicles
             "features": ["presence", "x", "y", "vx", "vy", "cos_h", "sin_h"],
             "ems_features": (['SOC', 'SOH_FCS', 'SOH_BAT', 'P_FCS', 'P_req'] if EMS_flag else []),
             # len(ems_features) must less than len(features)

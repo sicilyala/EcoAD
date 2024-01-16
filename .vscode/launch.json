@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "purpose": [    "debug-in-terminal"]
+            "purpose": ["debug-in-terminal"]
         }
     ]
 }
