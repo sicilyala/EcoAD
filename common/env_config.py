@@ -10,6 +10,7 @@ def get_config(argus):
 
     configs = {
         "envname": 'cwqaq-ecoad',
+        # observation 
         "observation": {
             "type": "Kinematics",
             "vehicles_count": 6,  # Number of observed vehicles
@@ -27,27 +28,34 @@ def get_config(argus):
             "absolute": False,
             "order": "sorted",
         },
+        # action 
         "ActionContinuity": ActionContinuity,
         "action": {
             "type": "ContinuousAction" if ActionContinuity else "DiscreteMetaAction",
             "acceleration_range": [-2.0, 2.0],  # m/s2
             "speed_range": [-MAX_SPD, MAX_SPD],  # m/s
             "lateral": LateralControl,
-            "steering_range": [-math.pi / 4, math.pi / 4],  # rad
+            "steering_range": [-math.pi / 4, math.pi / 4],  # 0.7854 rad
             "ems_flag": EMS_flag,
             "engine_power_range": [0, 60],  # kW
             # "dynamical": False,      # # False for Vehicle, True for BicycleVehicle (with tire friction and slipping)
             "action_dim": int(1 + LateralControl + EMS_flag)},
-        # reward
+        
+        # reward setting 
         "normalize_reward": False,
         "reward_speed_range": [MAX_SPD-5, MAX_SPD],
-        "collision_reward": -1,  # The reward received when colliding with a vehicle.
-        "on_road_reward": 1.0,  # True of False
         "offroad_terminal": True, # activate off-road terminal 
-        "lane_change_reward": 1.0,  # The reward received at each lane change action.
-        "right_lane_reward": 0.1,  # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
+        
+        # reward weight coefficients 
+        "collision_reward": 1.0,  # The reward received when colliding with a vehicle.
+        "on_road_reward": 1.0,  # True of False
+        "right_lane_reward": 1.0, # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
+        "center_line_reward": 1.0,
         "high_speed_reward": 1.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
-        "EMS_reward": 1.0,     # it's actually the weight coefficient
+        "comfort_reward": 1.0, 
+        "EMS_reward": 1.0,     # it's actually the weight coefficient        
+        "lane_change_reward": 1.0,  # The reward received at each lane change action.         
+        
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
@@ -62,7 +70,7 @@ def get_config(argus):
         "policy_frequency": 1,  # [Hz]
         "screen_width": 600,  # [px]
         "screen_height": 350,  # [px]
-        "centering_position": [0.3, 0.5],
+        "centering_position": [0.3, 0.5],       # what's this?
         "scaling": 5.5,
         "show_trajectories": False,
         "render_agent": True,
@@ -76,7 +84,8 @@ def show_config(configs):
     print('env-name: ', configs["envname"])
     print('observation_type: ', configs["observation"]["type"])
     print('action_type: ', configs["action"]["type"])
-    print('lanes_count: ', configs["lanes_count"])
+    print('lanes_count: ', configs["lanes_count"])  
+    print('obs_vehicles_count: ', configs["vehicles_count"])
     print('----------------------------------')
 
 

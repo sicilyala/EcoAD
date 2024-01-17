@@ -1,7 +1,5 @@
 from typing import Dict, Text
-
 import numpy as np
-import os
 
 from highway_env import utils
 from highway_env.envs.common.abstract import AbstractEnv
@@ -110,18 +108,18 @@ class EcoADEnv(AbstractEnv):
         :param action: the last action performed
         :return: the corresponding reward
         """
-        rewards = self._rewards(action)
-        reward = sum(self.config.get(name, 0) * reward
-                     for name, reward in rewards.items())
-        # TODO: allocate weight coefficient of different reward items here!
+        # already weighted average rewards
+        total_rewards = self._rewards(action)
+        total_reward_weighted_sum = sum(reward for reward in total_rewards.values()) 
+        
         if self.config["normalize_reward"]:
             print("EcoADEnv._reward(): 'normalize_reward' yes")
-            reward = utils.lmap(reward,
-                                [self.config["collision_reward"],
-                                 self.config["high_speed_reward"] + self.config["right_lane_reward"]],
-                                [0, 1])
-        reward *= rewards['on_road_reward']  # 0 or 1
-        return reward
+            total_reward_weighted_sum = utils.lmap(total_reward_weighted_sum,
+                                                    [self.config["collision_reward"], 
+                                                     self.config["high_speed_reward"] + self.config["right_lane_reward"]], 
+                                                     [0, 1])
+             
+        return total_reward_weighted_sum
 
     def _rewards(self, action: Action) -> Dict[Text, float]:
         neighbours = self.road.network.all_side_lanes(self.vehicle.lane_index)
@@ -130,16 +128,43 @@ class EcoADEnv(AbstractEnv):
         # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
         forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
         scaled_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])
-        # TODO how to design centering reward ?
+        
+        # safety reward 
+        r_safety = -1.0 if self.vehicle.crashed else 1.0  
+        # on road reward
+        r_road  = 0.0 if self.vehicle.on_road else -1.0
+        # rightmost lane reward 
+        r_right = lane / max(len(neighbours) - 1, 1)    # len(neighbours) ?
+        # driving on the center line of lane
+        lane_center_lateral_position = self.lanes_centers[lane]
+        vehicle_lateral_position = self.vehicle.position[1]    # y coordinate, is it right?
+        r_center = -abs(vehicle_lateral_position - lane_center_lateral_position) # range: -[0, 2]?
+        # high speed reward, efficiency 
+        r_speed = np.clip(scaled_speed, 0, 1)   # 
+        # comfort reward 
+        r_jerk = 1 - abs(action[1] * forward_speed) / 4
+              
         rewards = {
-                "collision_reward": float(self.vehicle.crashed),  # True of False
-                "on_road_reward": float(self.vehicle.on_road),  # True of False
-                "right_lane_reward": lane / max(len(neighbours) - 1, 1),
-                "high_speed_reward": np.clip(scaled_speed, 0, 1)}
-        if self.config["action"]["ems_flag"]:
-            rewards.update({"EMS_reward": float(self.vehicle.EMS_reward)})
+            "collision_reward": float(r_safety), 
+            "on_road_reward": float(r_road),            
+            "right_lane_reward": float(r_right),
+            "center_line_reward": float(r_center),
+            "high_speed_reward": float(r_speed),
+            "comfort_reward": float(r_jerk)
+        }           
+        
+        # EMS reward              
+        if self.config["action"]["ems_flag"]:                   
+            r_EMS = self.vehicle.EMS_reward
+            rewards.update({"EMS_reward": float(r_EMS)})
 
-        return rewards
+        # weighted average rewards 
+        weighted_rewards = {}
+        for name, reward in rewards.items():
+            w_reward = reward * self.config.get(name, 0)
+            weighted_rewards.update({name: w_reward})
+        
+        return weighted_rewards
 
     def _is_terminated(self) -> bool:
         """The episode is over if the ego vehicle crashed."""

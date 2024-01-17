@@ -184,10 +184,8 @@ class AbstractEnv(gym.Env):
             "crashed": self.vehicle.crashed,
             "action": action
         }
-        try:
-            info["rewards"] = self._rewards(action)
-        except NotImplementedError:
-            pass
+        info.update({"rewards": self._rewards(action)}) 
+
         if self.config["action"]["ems_flag"]:
             info.update({"EMS_info": self.vehicle.EMS_info})
         return info
