@@ -78,6 +78,7 @@ class EcoADEnv(AbstractEnv):
             # print('lane {}, center at {}, start at {}, end at {}'.format(lane_id, lane_center, lane.start, lane.end))
         # print(self.lanes_centers)
         # print(self.lanes_list)  
+        self.lane_width = lane_width
 
     def _create_vehicles(self) -> None:
         """Create some new random vehicles of a given type, and add them on the road."""
@@ -122,7 +123,7 @@ class EcoADEnv(AbstractEnv):
         return total_reward_weighted_sum
 
     def _rewards(self, action: Action) -> Dict[Text, float]:
-        neighbours = self.road.network.all_side_lanes(self.vehicle.lane_index)
+        neighbours = self.road.network.all_side_lanes(self.vehicle.lane_index)  # return: all lanes belonging to the same road.
         lane = self.vehicle.target_lane_index[2] if isinstance(self.vehicle, ControlledVehicle) \
             else self.vehicle.lane_index[2]
         # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
@@ -130,24 +131,24 @@ class EcoADEnv(AbstractEnv):
         scaled_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])
         
         # safety reward 
-        r_safety = -1.0 if self.vehicle.crashed else 1.0  
+        r_safety = -2.0 if self.vehicle.crashed else 1.0  
         # on road reward
-        r_road  = 0.0 if self.vehicle.on_road else -1.0
-        # rightmost lane reward 
-        r_right = lane / max(len(neighbours) - 1, 1)    # len(neighbours) ?
+        r_road  = 1.0 if self.vehicle.on_road else -2.0
+        # leftmost lane reward 
+        r_left = lane / max(len(neighbours) - 1, 1)    # len(neighbours): number os lanes, range: [0, 1, 2]/2
         # driving on the center line of lane
         lane_center_lateral_position = self.lanes_centers[lane]
-        vehicle_lateral_position = self.vehicle.position[1]    # y coordinate, is it right?
-        r_center = -abs(vehicle_lateral_position - lane_center_lateral_position) # range: -[0, 2]?
+        vehicle_lateral_position = self.vehicle.position[1]    # y coordinate 
+        r_center = 0.5*self.lane_width - abs(vehicle_lateral_position - lane_center_lateral_position) # maximum: 2
         # high speed reward, efficiency 
         r_speed = np.clip(scaled_speed, 0, 1)   # 
         # comfort reward 
-        r_jerk = 1 - abs(action[1] * forward_speed) / 4
+        r_jerk = 1 - abs(action[1] * forward_speed) / 4     # TODO is it suitable? waiting for further study     
               
         rewards = {
             "collision_reward": float(r_safety), 
             "on_road_reward": float(r_road),            
-            "right_lane_reward": float(r_right),
+            "left_lane_reward": float(r_left),
             "center_line_reward": float(r_center),
             "high_speed_reward": float(r_speed),
             "comfort_reward": float(r_jerk)
@@ -168,6 +169,7 @@ class EcoADEnv(AbstractEnv):
 
     def _is_terminated(self) -> bool:
         """The episode is over if the ego vehicle crashed."""
+        # TODO 为了延长episode，需要减少off-road次数，考虑连续两次off-road才terminate？
         return (self.vehicle.crashed or
                 self.config["offroad_terminal"] and not self.vehicle.on_road)
 

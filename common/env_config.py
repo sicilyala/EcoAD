@@ -43,13 +43,13 @@ def get_config(argus):
         
         # reward setting 
         "normalize_reward": False,
-        "reward_speed_range": [MAX_SPD-5, MAX_SPD],
+        "reward_speed_range": [MAX_SPD-5, MAX_SPD], # [25, 30]
         "offroad_terminal": True, # activate off-road terminal 
         
         # reward weight coefficients 
         "collision_reward": 1.0,  # The reward received when colliding with a vehicle.
         "on_road_reward": 1.0,  # True of False
-        "right_lane_reward": 1.0, # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
+        "left_lane_reward": 1.0, # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
         "center_line_reward": 1.0,
         "high_speed_reward": 1.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
         "comfort_reward": 1.0, 
@@ -60,7 +60,7 @@ def get_config(argus):
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
         "lane_start": 0,
-        "lane_length": 20000,
+        "lane_length": 50000,
         "road_spd_limit": MAX_SPD,      # m/s 
         "vehicles_density": 1.5,
         "vehicles_count": 500,

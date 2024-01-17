@@ -66,7 +66,8 @@ if __name__ == "__main__":
     data_dir = model_dir + "-data"
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
-        
+    
+    env.configure({"simulation_frequency": 10})
     obs, info = env.reset()    
     for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs[np.newaxis, :], deterministic=True)
@@ -81,4 +82,5 @@ if __name__ == "__main__":
             obs, _ = env.reset()
 
     plt.imshow(env.render())
-    plt.show()
+    # plt.show() 
+    # sys.exit("training and replay finished, yeah!")

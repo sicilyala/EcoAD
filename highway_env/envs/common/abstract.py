@@ -180,9 +180,13 @@ class AbstractEnv(gym.Env):
         :return: info dict
         """
         info = {
-            "speed": self.vehicle.speed,
             "crashed": self.vehicle.crashed,
-            "action": action
+            "position": self.vehicle.position,
+            "direction": self.vehicle.direction,
+            "speed": self.vehicle.speed,
+            "velocity": self.vehicle.velocity,            
+            "action": action,
+            "lane_index": self.vehicle.lane_index[2],
         }
         info.update({"rewards": self._rewards(action)}) 
 

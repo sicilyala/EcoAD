@@ -31,7 +31,8 @@ if __name__ == "__main__":
     DRL_agent = DRL_methods[model_name].load(model_dir)    
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
-        
+    
+    env.configure({"simulation_frequency": 15})
     obs, info = env.reset() 
     for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs[None], deterministic=True)
@@ -45,4 +46,4 @@ if __name__ == "__main__":
             obs, _ = env.reset()
     
     plt.imshow(env.render())
-    plt.show()
+    # plt.show()
