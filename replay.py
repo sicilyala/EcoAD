@@ -1,7 +1,9 @@
 import sys
+import os
 import gymnasium as gym
 from tqdm import tqdm
 from matplotlib import pyplot as plt
+import scipy.io as scio
 
 from highway_env import register_highway_envs
 from common.arguments import get_args
@@ -24,20 +26,23 @@ if __name__ == "__main__":
     # replay the video
     print("\n----------Start Evaluating----------")
     model_name = args.drl_model.lower()
-    DRL_agent = DRL_methods[model_name].load(
-        log_dir + model_name + "-model-%s" % args.model_time
-    )
-
-    obs, info = env.reset()
+    model_dir = log_dir + model_name + "-model-%s" % args.model_time
+    data_dir = model_dir + "-data"
+    DRL_agent = DRL_methods[model_name].load(model_dir)    
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+        
+    obs, info = env.reset() 
     for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs[None], deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action[0])
+        scio.savemat(data_dir+"/step%d.mat" % i, mdict=info) 
         # print("\n[Evaluation Step %d]: " % i)
         # print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
         # print_info(info)
         env.render()
         if terminated or truncated:
-            _, _ = env.reset()
-
+            obs, _ = env.reset()
+    
     plt.imshow(env.render())
     plt.show()

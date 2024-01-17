@@ -6,6 +6,7 @@ import gymnasium as gym
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 from torchsummary import summary
+import scipy.io as scio
 
 from highway_env import register_highway_envs
 from common.arguments import get_args
@@ -25,11 +26,7 @@ if __name__ == "__main__":
     # env = gym.make('EcoAD-v0', render_mode='rgb_array')    # can't pass [config] to [env] immediately # 第一次定义无法将config传入env env.env.configure(config)
     obs, info = env.reset()
     print("\n----------Reset Before Training----------")
-    print_obs(
-        obs,
-        ems_flag=config["action"]["ems_flag"],
-        obs_features=config["observation"]["features"],
-    )
+    print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
     print_info(info)
     show_config(config)
     print("observation_space: ", env.observation_space)
@@ -37,10 +34,7 @@ if __name__ == "__main__":
     print("observation_shape: ", env.observation_space.shape)
     print("action_shape: ", env.action_space.shape)
     print("----------------------------------\n")
-    print(
-        "\n----------Training started at %s----------"
-        % time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    )
+    print("\n----------Training started at %s----------"% time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 
     # dir
     log_dir = "./EcoHighway_DRL/"
@@ -54,39 +48,37 @@ if __name__ == "__main__":
     model_name = args.drl_model.lower()
 
     # DRL agent training
-    DRL_agent = DRL_agents[model_name](
-        env, args, log_dir, action_dim=config["action"]["action_dim"]
-    )
+    DRL_agent = DRL_agents[model_name](env, args, log_dir, action_dim=config["action"]["action_dim"])
     print(DRL_agent.policy)
-    summary(
-        model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1])
-    )  # C*H*W, the same as input
+    summary(model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1]))  # C*H*W, the same as input
     DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
     now = time.localtime()
     now_str = time.strftime("%b-%d-%H-%M", now)
-    DRL_agent.save(log_dir + "/%s-model-%s" % (model_name, now_str))
+    model_dir = log_dir + "/%s-model-%s" % (model_name, now_str)
+    DRL_agent.save(model_dir)
     del DRL_agent
 
-    # evaluation: Load and test the saved model
-    DRL_agent = DRL_methods[model_name].load(
-        log_dir + "/%s-model-%s" % (model_name, now_str)
-    )
-    print(
-        "\n----------Training stopped at %s----------"
-        % time.strftime("%Y-%m-%d %H:%M:%S", now)
-    )
+    # evaluation: Load and test the saved model 
+    
+    DRL_agent = DRL_methods[model_name].load(model_dir)
+    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))
     print("\n----------Start Evaluating----------")
-    obs, info = env.reset()
+    data_dir = model_dir + "-data"
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+        
+    obs, info = env.reset()    
     for i in tqdm(range(args.evaluation_episodes)):
         action, _ = DRL_agent.predict(obs[np.newaxis, :], deterministic=True)
         # print('action: ', action, type(action), action.shape)
         obs, reward, terminated, truncated, info = env.step(action[0])
+        scio.savemat(data_dir+"/step%d.mat" % i, mdict=info) 
         # print("\n[Evaluation Step %d]: " % i)
         # print_obs(obs, ems_flag=config["action"]["ems_flag"], obs_features=config["observation"]["features"])
         # print_info(info)
         env.render()
         if terminated or truncated:
-            _, _ = env.reset()
+            obs, _ = env.reset()
 
     plt.imshow(env.render())
     plt.show()
