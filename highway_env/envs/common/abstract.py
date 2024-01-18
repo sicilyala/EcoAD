@@ -268,7 +268,12 @@ class AbstractEnv(gym.Env):
                 self.action_type.act(action)
 
             self.road.act()
-            self.road.step(1 / self.config["simulation_frequency"])
+            self.road.step(1 / self.config["simulation_frequency"])     # execute Vehicle.step(),
+            """
+            Road.step(self, dt: float) -> None:
+                Vehicle.step(self, dt: float) -> None
+
+            """
             self.steps += 1
 
             # Automatically render intermediate simulation steps if a viewer has been launched

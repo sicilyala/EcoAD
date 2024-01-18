@@ -20,7 +20,7 @@ def replay(env, replay_steps, model_name, model_dir):
         
     print("\n---------- Evaluating %s model ----------" % model_name.upper())
     reset_step = [] 
-    # env.configure({"simulation_frequency": 30})
+    env.configure({"simulation_frequency": 30})
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
         action, _ = DRL_agent.predict(obs[None], deterministic=True)
