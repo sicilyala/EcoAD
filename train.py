@@ -8,12 +8,12 @@ from highway_env import register_highway_envs
 from common.arguments import get_args
 from common.env_config import show_config, get_config
 from common.my_utils import print_info, print_obs
-from common.drl_agents import DRL_methods, DRL_agents
+from common.drl_agents import DRL_agents
 from replay import replay
 
 
 if __name__ == "__main__":
-    print("[platform]: %s" % sys.platform)
+    print("\n[platform]: %s" % sys.platform)
     args = get_args()
     config = get_config(args)
     # register new environments
@@ -54,10 +54,8 @@ if __name__ == "__main__":
     model_dir = log_dir + "/%s-model-%s" % (model_name, now_str)
     DRL_agent.save(model_dir)
     del DRL_agent
+    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))   
 
     # evaluation: Load and test the saved model 
-    print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))   
-    print("\n----------Start Evaluating----------")
-    # replay the video
-    DRL_agent = DRL_methods[model_name].load(model_dir)
-    replay(env, DRL_agent, args.replay_steps, model_dir)
+    # replay the video 
+    replay(env, args.replay_steps, model_name, model_dir)
