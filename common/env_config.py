@@ -7,6 +7,7 @@ def get_config(argus):
     LateralControl = argus.lateral_control
     MAX_SPD = argus.max_spd
     EMS_flag = argus.ems_flag
+    action_frequency = argus.act_freq
 
     configs = {
         "envname": 'cwqaq-ecoad',
@@ -66,8 +67,8 @@ def get_config(argus):
         "vehicles_count": 500,
         "initial_spacing": 3,
         "duration": 100,  # [s]
-        "simulation_frequency": 1,  # [Hz]
-        "policy_frequency": 1,  # [Hz]
+        "simulation_frequency": action_frequency,  # [Hz] for fast training 
+        "policy_frequency": action_frequency,  # [Hz] the action is executed for 0.5s, try [5, 10] HZ 
         "screen_width": 600,  # [px]
         "screen_height": 350,  # [px]
         "centering_position": [0.3, 0.5],       # what's this?
@@ -86,6 +87,8 @@ def show_config(configs):
     print('action_type: ', configs["action"]["type"])
     print('lanes_count: ', configs["lanes_count"])  
     print('obs_vehicles_count: ', configs["vehicles_count"])
+    print('policy_frequency: ', configs['policy_frequency'])
+    print('simulation_frequency: ', configs['simulation_frequency'])
     print('----------------------------------')
 
 

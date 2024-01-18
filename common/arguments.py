@@ -26,6 +26,8 @@ def get_args():
     parser.add_argument('--learning_starts', default=200, type=int,
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     
+    # for training 
+    parser.add_argument('--act_freq', default=2, type=int, help='action control frequency, [2, 5, 10]Hz, [0.5,0.2,0.1]s')
     parser.add_argument('--train_freq', default=1, type=int, help='Update the model every ``train_freq`` steps')
     parser.add_argument('--gradient_steps', default=-1, type=int, help='Set to ``-1`` means to do as many gradient steps as steps during the rollout')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
@@ -34,7 +36,7 @@ def get_args():
     # for replay evaluation
     parser.add_argument('--replay_steps', default=20, type=int,
                         help="the total number of env steps evaluate")
-    parser.add_argument('--sim_freq', default=10, type=int, help='simulation frequency for only replay')
+    parser.add_argument('--sim_freq', default=10, type=int, help='to show clearly, simulation frequency for only replay')
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo')
     parser.add_argument('--model_time', default='Jan-17-20-37', type=str)
