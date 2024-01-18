@@ -19,7 +19,7 @@ def replay(env, replay_steps, model_name, model_dir):
         os.mkdir(data_dir)
         
     print("\n---------- Evaluating %s model ----------" % model_name.upper())
-    reset_step = []
+    reset_step = [] 
     # env.configure({"simulation_frequency": 30})
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
@@ -35,8 +35,11 @@ def replay(env, replay_steps, model_name, model_dir):
             print("\n[reset] at step %d, safe driving lasts for %d steps." % (i, i-last_reset))
             reset_step.append(i)
             obs, _ = env.reset()
-    print('\nreset steps: ', reset_step)
-    scio.savemat(data_dir+"/reset_step.mat", mdict={'reset_step': reset_step}) 
+   
+    epi_mean_length = replay_steps/(1+len(reset_step))
+    print('\nepi_mean_length: {:.1f}, reset steps: {}\n'.format(epi_mean_length, reset_step))
+    reset_data = {'reset_step': reset_step, 'epi_mean_length': epi_mean_length}
+    scio.savemat(data_dir+"/reset_data.mat", mdict=reset_data)  
     plt.imshow(env.render())
     # plt.show()
     
