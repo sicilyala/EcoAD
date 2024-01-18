@@ -32,11 +32,11 @@ def get_args():
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
     
     # for replay evaluation
-    parser.add_argument('--evaluation_episodes', default=6, type=int,
+    parser.add_argument('--replay_steps', default=20, type=int,
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
-    parser.add_argument('--drl_model', default="ddpg", type=str, help='dqn, ddpg, td3, sac, a2c, ppo')
-    parser.add_argument('--model_time', default='', type=str)
+    parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo')
+    parser.add_argument('--model_time', default='Jan-17-20-37', type=str)
 
     args = parser.parse_args()
     return args
