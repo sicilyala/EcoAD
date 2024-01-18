@@ -34,6 +34,7 @@ def get_args():
     # for replay evaluation
     parser.add_argument('--replay_steps', default=20, type=int,
                         help="the total number of env steps evaluate")
+    parser.add_argument('--sim_freq', default=10, type=int, help='simulation frequency for only replay')
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo')
     parser.add_argument('--model_time', default='Jan-17-20-37', type=str)

@@ -272,7 +272,13 @@ class AbstractEnv(gym.Env):
             """
             Road.step(self, dt: float) -> None:
                 Vehicle.step(self, dt: float) -> None
-
+            
+            anyhow, self.action_type.act(action) is only called once, 
+                so it is a constant action during this simulation step
+            such that, let simulation_frequency==5, 
+                for policy_frequency=1: road.step will be called 5 times with dt=0.2, the action will be fully executed 
+                for policy_frequency=2: road.step will be called 2 times with dt=0.2, the action will only be half executed 
+                for policy_frequency=0.5: road.step will be called 10 times with dt=0.2, the action will be doubly executed 
             """
             self.steps += 1
 

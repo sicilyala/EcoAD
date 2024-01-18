@@ -20,7 +20,7 @@ def replay(env, replay_steps, model_name, model_dir):
         
     print("\n---------- Evaluating %s model ----------" % model_name.upper())
     reset_step = [] 
-    env.configure({"simulation_frequency": 30})
+    env.configure({"simulation_frequency": args.sim_freq})
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
         action, _ = DRL_agent.predict(obs[None], deterministic=True)
@@ -40,8 +40,7 @@ def replay(env, replay_steps, model_name, model_dir):
     print('\nepi_mean_length: {:.1f}, reset steps: {}\n'.format(epi_mean_length, reset_step))
     reset_data = {'reset_step': reset_step, 'epi_mean_length': epi_mean_length}
     scio.savemat(data_dir+"/reset_data.mat", mdict=reset_data)  
-    plt.imshow(env.render())
-    # plt.show()
+    plt.imshow(env.render()) 
     
 
 if __name__ == "__main__":
