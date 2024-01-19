@@ -12,15 +12,20 @@ from common.drl_agents import DRL_methods
 # from common.my_utils import print_obs, print_info
 
 
-def replay(env, replay_steps, model_name, model_dir):    
+def replay(env, 
+           model_name: str,
+           model_dir: str, 
+           replay_steps: int = 500,
+           sim_freq: int = 10,
+           ) -> None:
     DRL_agent = DRL_methods[model_name].load(model_dir)      
     data_dir = model_dir + "-data"
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         
-    print("\n---------- Evaluating %s model ----------" % model_name.upper())
+    print("\n---------- Evaluating %s ----------" % model_dir[-23:])
     reset_step = [] 
-    env.configure({"simulation_frequency": args.sim_freq})
+    env.configure({"simulation_frequency": sim_freq})
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
         action, _ = DRL_agent.predict(obs[None], deterministic=True)
@@ -55,5 +60,6 @@ if __name__ == "__main__":
     model_name = args.drl_model.lower()
     model_dir = log_dir + model_name + "-model-%s" % args.model_time
     # replay the video
-    replay(env, args.replay_steps, model_name, model_dir)
+    replay(env, model_name=model_name, model_dir=model_dir, 
+           replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
     

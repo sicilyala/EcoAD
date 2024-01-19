@@ -58,4 +58,5 @@ if __name__ == "__main__":
 
     # evaluation: Load and test the saved model 
     # replay the video 
-    replay(env, args.replay_steps, model_name, model_dir)
+    replay(env, model_name=model_name, model_dir=model_dir, 
+           replay_steps=args.replay_steps, sim_freq=args.sim_freq) 

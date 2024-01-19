@@ -75,7 +75,7 @@ def SAC_agent(env, args, log_dir, action_dim):
             features_extractor_class=CustomCNN,
             features_extractor_kwargs=dict(features_dim=args.features_dim),
             net_arch=args.net_arch,  # default [256, 128]    args.net_arch
-        ), 
+        ),
         learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),
         buffer_size=args.buffer_size,
         learning_starts=args.learning_starts,
@@ -83,12 +83,12 @@ def SAC_agent(env, args, log_dir, action_dim):
         tau=args.tau,
         gamma=args.gamma,
         train_freq=args.train_freq,
-        gradient_steps=args.gradient_steps, 
-        ent_coef='auto_1',  # 'auto_0.1' for using 0.1 as initial value
+        gradient_steps=args.gradient_steps,
+        ent_coef="auto_1",  # 'auto_0.1' for using 0.1 as initial value
         target_entropy=-action_dim,
         # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
-        # replay_buffer_kwargs=env, 
-        verbose=2,   
+        # replay_buffer_kwargs=env,
+        verbose=2,
         seed=args.seed,
         device=args.device,
         tensorboard_log=log_dir,
