@@ -42,21 +42,22 @@ if __name__ == "__main__":
     if args.ems_flag:
         args.log_dir += "_EMS"
     log_dir += args.log_dir
-    model_name = args.drl_model.lower()
+    drl_model = args.drl_model.lower()
 
     # DRL agent training
-    DRL_agent = DRL_agents[model_name](env, args, log_dir, action_dim=config["action"]["action_dim"])
+    DRL_agent = DRL_agents[drl_model](env, args, log_dir, action_dim=config["action"]["action_dim"])
+    print("\n------------%s model structure------------" % drl_model.upper())
     print(DRL_agent.policy)
     summary(model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1]))  # C*H*W, the same as input
     DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
     now = time.localtime()
     now_str = time.strftime("%b-%d-%H-%M", now)
-    model_dir = log_dir + "/%s-model-%s" % (model_name, now_str)
+    model_dir = log_dir + "/%s-model-%s" % (drl_model, now_str)
     DRL_agent.save(model_dir)
     del DRL_agent
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))   
 
     # evaluation: Load and test the saved model 
     # replay the video 
-    replay(env, model_name=model_name, model_dir=model_dir, 
+    replay(env, model_name=drl_model, model_dir=model_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 

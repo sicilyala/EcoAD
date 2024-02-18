@@ -9,26 +9,31 @@ from highway_env import register_highway_envs
 from common.arguments import get_args
 from common.env_config import get_config
 from common.drl_agents import DRL_methods
-# from common.my_utils import print_obs, print_info
+from common.my_utils import print_obs, print_info 
 
 
 def replay(env, 
            model_name: str,
            model_dir: str, 
            replay_steps: int = 500,
-           sim_freq: int = 10,
+           sim_freq: int = 100,
            ) -> None:
-    DRL_agent = DRL_methods[model_name].load(model_dir)      
+    DRL_agent = DRL_methods[model_name].load(model_dir)       
+    # DRL_agent.set_parameters(model_dir)
+    # print(DRL_agent.get_parameters()) 
+    
     data_dir = model_dir + "-data"
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         
-    print("\n---------- Evaluating %s ----------" % model_dir[-23:])
+    print("\n---------- Evaluate %s using %s ----------" % (model_name.upper(), model_dir[-23:]))
     reset_step = [] 
-    env.configure({"simulation_frequency": sim_freq})
+    env.configure({"simulation_frequency": sim_freq})  
+    print("action frequency: %d" % env.config["policy_frequency"]) 
+    print("simulation frequency: %d" % env.config["simulation_frequency"])
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
-        action, _ = DRL_agent.predict(obs[None], deterministic=True)
+        action, _ = DRL_agent.predict(obs[None], deterministic=False)
         obs, reward, terminated, truncated, info = env.step(action[0])
         scio.savemat(data_dir+"/step%d.mat" % i, mdict=info) 
         
@@ -57,9 +62,9 @@ if __name__ == "__main__":
     config = get_config(args)
     env = gym.make("EcoAD-v0", render_mode="rgb_array", config=config)
     log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"    
-    model_name = args.drl_model.lower()
-    model_dir = log_dir + model_name + "-model-%s" % args.model_time
-    # replay the video
-    replay(env, model_name=model_name, model_dir=model_dir, 
+    drl_model = args.drl_model.lower()
+    model_dir = log_dir + drl_model + "-model-%s" % args.model_time
+    # replay the video/
+    replay(env, model_name=drl_model, model_dir=model_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
     

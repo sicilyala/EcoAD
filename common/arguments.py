@@ -8,7 +8,9 @@ def get_args():
     parser.add_argument('--lateral_control', default=True, type=lambda x: x.lower() == 'true', help='activate lateral action')
     parser.add_argument('--ems_flag', default=True, type=lambda x: x.lower() == 'true', help='activate EMS,True of False')
     parser.add_argument('--max_spd', default=30, type=float, help='m/s')
-
+    parser.add_argument('--act_freq', default=50, type=int, help='action control frequency, [2, 5, 10]Hz, [0.5,0.2,0.1]s')
+    parser.add_argument('--sim_freq', default=100, type=int, help='MUST bigger than act_freq. to show clearly, simulation frequency for only replay')
+    
     # DRL method parameters
     parser.add_argument('--features_dim', default=128, type=int, help="1st layer of 'net_arch' fully connected layer")   
     parser.add_argument('--net_arch', default=[256, 128], type=list, help='policy net arch')
@@ -27,19 +29,17 @@ def get_args():
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     
     # for training 
-    parser.add_argument('--act_freq', default=2, type=int, help='action control frequency, [2, 5, 10]Hz, [0.5,0.2,0.1]s')
     parser.add_argument('--train_freq', default=1, type=int, help='Update the model every ``train_freq`` steps')
     parser.add_argument('--gradient_steps', default=-1, type=int, help='Set to ``-1`` means to do as many gradient steps as steps during the rollout')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
     
     # for replay evaluation
-    parser.add_argument('--replay_steps', default=100, type=int,
+    parser.add_argument('--replay_steps', default=1000, type=int,
                         help="the total number of env steps evaluate")
-    parser.add_argument('--sim_freq', default=5, type=int, help='to show clearly, simulation frequency for only replay')
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo')
-    parser.add_argument('--model_time', default='Jan-19-01-49', type=str)
+    parser.add_argument('--model_time', default='Jan-19-01-48', type=str)
 
     args = parser.parse_args()
     return args

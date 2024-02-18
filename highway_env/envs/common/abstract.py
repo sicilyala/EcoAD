@@ -276,9 +276,10 @@ class AbstractEnv(gym.Env):
             anyhow, self.action_type.act(action) is only called once, 
                 so it is a constant action during this simulation step
             such that, let simulation_frequency==5, 
+                for policy_frequency=5: road.step will be called 1 times with dt=0.2, the action will only be half executed, 0.2s;
                 for policy_frequency=1: road.step will be called 5 times with dt=0.2, the action will be fully executed, 1s;
                 for policy_frequency=2: road.step will be called 2 times with dt=0.2, the action will only be half executed, 0.4s;
-                for policy_frequency=0.5: road.step will be called 10 times with dt=0.2, the action will be doubly executed, 2s.
+                for policy_frequency=0.5: road.step will be called 10 times with dt=0.2, the action will be doubly executed, 2s.                
             
             because dt=1/simulation_frequency, so the action is executed for 1 second 
             let policy_frequency=2, for simulation_frequency=[2, 4, 10]

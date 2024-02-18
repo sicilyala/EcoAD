@@ -23,8 +23,7 @@ def DQN_agent(env, args, log_dir, action_dim):
         verbose=2,
         device=args.device,
         tensorboard_log=log_dir,
-    )
-    print("\n------------DQN model structure------------")
+    ) 
     return DRL_agent
 
 
@@ -50,6 +49,7 @@ def DDPG_agent(env, args, log_dir, action_dim):
             np.zeros(action_dim) + args.noise,
         ),
         # TODO action-noise std, how to degenerate? seems impossible?
+        # TODO how eliminate action noise when replaying ?
         # off_policy_algorithm: L398
         # replay_buffer_class='HerReplayBuffer',   # only Hindsight ER
         # replay_buffer_kwargs=env,        #
@@ -58,8 +58,7 @@ def DDPG_agent(env, args, log_dir, action_dim):
         device=args.device,
         tensorboard_log=log_dir,
         # _init_setup_model=False,
-    )
-    print("\n------------DDPG model structure------------")
+    ) 
     return DRL_agent
 
 
@@ -85,6 +84,7 @@ def SAC_agent(env, args, log_dir, action_dim):
         train_freq=args.train_freq,
         gradient_steps=args.gradient_steps,
         ent_coef="auto_1",  # 'auto_0.1' for using 0.1 as initial value
+        # TODO hwo to use determined entropy coefficient ? (how to eliminate actin noise ?)
         target_entropy=-action_dim,
         # replay_buffer_class='HerReplayBuffer',   # only Hindsight EP
         # replay_buffer_kwargs=env,
@@ -93,8 +93,7 @@ def SAC_agent(env, args, log_dir, action_dim):
         device=args.device,
         tensorboard_log=log_dir,
         # _init_setup_model=False,
-    )
-    print("\n------------SAC model structure------------")
+    )    
     return DRL_agent
 
 
