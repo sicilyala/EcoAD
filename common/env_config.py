@@ -61,7 +61,7 @@ def get_config(argus):
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
         "lanes_count": 3,
         "lane_start": 0,
-        "lane_length": 50000,
+        "lane_length": 1000000,
         "road_spd_limit": MAX_SPD,      # m/s 
         "vehicles_density": 1.5,
         "vehicles_count": 500,
@@ -90,38 +90,3 @@ def show_config(configs):
     print('policy_frequency: ', configs['policy_frequency'])
     print('simulation_frequency: ', configs['simulation_frequency'])
     print('----------------------------------')
-
-
-if __name__ == '__main__':
-    import gymnasium as gym
-    from tqdm import tqdm
-    from matplotlib import pyplot as plt
-    from stable_baselines3 import DQN, DDPG
-    from highway_env import register_highway_envs
-    from common.arguments import get_args
-    from common.env_config import show_config, get_config
-
-
-    args = get_args()
-    args.action_continuity = True
-    args.lateral_control = False
-    args.ems_flag = True
-    config = get_config(args) 
-    config["lanes_count"] = 3 
-    config["vehicles_density"] = 2 
-    config["vehicles_count"] = 500  
-
-    register_highway_envs() 
-    env = gym.make('EcoAD-v0', render_mode='rgb_array', config=config)
-
-    obs, info = env.reset() 
-    for i in tqdm(range(100)):
-        # action, _ = DRL_agent.predict(obs, deterministic=True)
-        action = env.action_type.actions_indexes["IDLE"]
-        obs, reward, terminated, truncated, info = env.step(action) 
-        env.render()
-        if terminated or truncated:
-            _, _ = env.reset()
-
-    plt.imshow(env.render())
-    plt.show()

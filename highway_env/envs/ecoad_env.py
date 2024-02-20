@@ -133,7 +133,7 @@ class EcoADEnv(AbstractEnv):
         # safety reward 
         r_safety = -2.0 if self.vehicle.crashed else 1.0  
         # on road reward
-        r_road  = 1.0 if self.vehicle.on_road else -2.0
+        r_road  = 1.0 if self.vehicle.on_road else -2.0     # TODO 与中心线合并，与最左车道合并
         # leftmost lane reward 
         r_left = lane / max(len(neighbours) - 1, 1)    # len(neighbours): number os lanes, range: [0, 1, 2]/2
         # driving on the center line of lane
@@ -144,6 +144,7 @@ class EcoADEnv(AbstractEnv):
         r_speed = np.clip(scaled_speed, 0, 1)   # 
         # comfort reward 
         r_jerk = 1 - abs(action[1] * forward_speed) / 4     # TODO is it suitable? waiting for further study     
+        # TODO 换道奖励？添加在速度奖励后面？
               
         rewards = {
             "collision_reward": float(r_safety), 
