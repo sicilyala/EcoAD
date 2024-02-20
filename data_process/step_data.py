@@ -1,4 +1,3 @@
-import numpy as np 
 import matplotlib.pyplot as plt 
 import scipy.io as scio  
 
@@ -35,5 +34,5 @@ for i in range(args.replay_steps):
     crash.append(datai["crashed"][0][0])
     lane.append(datai["lane_index"][0][0])
     
-plt.plot(x_step, lane)
+plt.plot(x_step, spd)
 plt.show()
