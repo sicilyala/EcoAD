@@ -54,9 +54,14 @@ if __name__ == "__main__":
     now_str = time.strftime("%b-%d-%H-%M", now)
     model_dir = log_dir + "/%s-model-%s" % (drl_model, now_str)
     DRL_agent.save(model_dir)
-    del DRL_agent
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))   
-
+    
+    buffer_counter = DRL_agent.replay_buffer.counter
+    buffer_size = args.buffer_size
+    ration = buffer_counter / buffer_size
+    print("\nbuffer counter: %d, buffer_size: %d, ratio: %.3f" % (buffer_counter, buffer_size, ration))
+    
+    del DRL_agent
     # evaluation: Load and test the saved model 
     # replay the video 
     replay(env, model_name=drl_model, model_dir=model_dir, 

@@ -52,7 +52,7 @@ def get_config(argus):
         "on_road_reward": 1.0,  # True of False
         "left_lane_reward": 1.0, # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
         "center_line_reward": 1.0,
-        "high_speed_reward": 1.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
+        "high_speed_reward": 2.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
         "comfort_reward": 1.0, 
         "EMS_reward": 1.0,     # it's actually the weight coefficient        
         "lane_change_reward": 1.0,  # The reward received at each lane change action.         

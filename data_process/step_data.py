@@ -3,6 +3,7 @@ import scipy.io as scio
 
 from common.arguments import get_args
 
+
 args = get_args()
 log_dir = "../EcoHighway_DRL/" + args.dir_name + "/"    
 drl_model = args.drl_model.lower()
@@ -33,6 +34,18 @@ for i in range(args.replay_steps):
     position_y.append(positions[1])  
     crash.append(datai["crashed"][0][0])
     lane.append(datai["lane_index"][0][0])
-    
+ 
+plt.plot(x_step, action_0)
+plt.show()
+plt.plot(x_step, action_1)
+plt.show()
+plt.plot(x_step, action_2)
+plt.show()
 plt.plot(x_step, spd)
+plt.show()
+plt.plot(x_step, position_x)
+plt.show() 
+plt.plot(x_step, crash)
+plt.show()
+plt.plot(x_step, lane)
 plt.show()

@@ -126,25 +126,31 @@ class EcoADEnv(AbstractEnv):
         neighbours = self.road.network.all_side_lanes(self.vehicle.lane_index)  # return: all lanes belonging to the same road.
         lane = self.vehicle.target_lane_index[2] if isinstance(self.vehicle, ControlledVehicle) \
             else self.vehicle.lane_index[2]
-        # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
-        forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
-        scaled_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])
         
         # safety reward 
         r_safety = -2.0 if self.vehicle.crashed else 1.0  
+        
         # on road reward
-        r_road  = 1.0 if self.vehicle.on_road else -2.0     # TODO 与中心线合并，与最左车道合并
+        r_road  = 1.0 if self.vehicle.on_road else -2.0     # TODO 与中心线合并，与最左车道合并?
+        
         # leftmost lane reward 
         r_left = lane / max(len(neighbours) - 1, 1)    # len(neighbours): number os lanes, range: [0, 1, 2]/2
+        
         # driving on the center line of lane
         lane_center_lateral_position = self.lanes_centers[lane]
         vehicle_lateral_position = self.vehicle.position[1]    # y coordinate 
         r_center = 0.5*self.lane_width - abs(vehicle_lateral_position - lane_center_lateral_position) # maximum: 2
+        
         # high speed reward, efficiency 
-        r_speed = np.clip(scaled_speed, 0, 1)   # 
+        # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
+        forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
+        r_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])     # 20 -> -1.0, 30 -> 1.0 
+        
         # comfort reward 
-        r_jerk = 1 - abs(action[1] * forward_speed) / 4     # TODO is it suitable? waiting for further study     
-        # TODO 换道奖励？添加在速度奖励后面？
+        r_jerk = 2 - abs(action[1] * forward_speed) / 4    # action[1]: [maximum 0.7854]; r_jerk maximum: 2
+        # TODO r_jerk is it suitable? waiting for further study     
+        
+        # TODO 是否需要单独的换道奖励？添加在速度奖励后面？
               
         rewards = {
             "collision_reward": float(r_safety), 
