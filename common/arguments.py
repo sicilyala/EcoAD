@@ -21,7 +21,7 @@ def get_args():
     parser.add_argument('--device', default='auto', type=str, help="auto, cuda, cpu")
     parser.add_argument('--noise', default=0.10, type=float, help='std of Gaussian noise, used for ddpg')
     
-    parser.add_argument('--buffer_size', default=20000, type=int, help='buffer_size')
+    parser.add_argument('--buffer_size', default=40000, type=int, help='buffer_size')
     parser.add_argument('--batch_size', default=128, type=int, help='batch_size')
     parser.add_argument('--total_time_steps', default=40200, type=int,       
                         help="the total number of samples (env steps) to train on")    
