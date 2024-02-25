@@ -63,7 +63,7 @@ if __name__ == "__main__":
     env = gym.make("EcoAD-v0", render_mode="rgb_array", config=config)
     log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"    
     drl_model = args.drl_model.lower()
-    model_dir = log_dir + drl_model + "-model-%s" % args.model_time
+    model_dir = log_dir + drl_model + "-%s" % (args.model_id_time)
     # replay the video/
     replay(env, model_name=drl_model, model_dir=model_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 

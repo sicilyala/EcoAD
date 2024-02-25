@@ -7,7 +7,10 @@ from common.arguments import get_args
 args = get_args()
 log_dir = "../EcoHighway_DRL/" + args.dir_name + "/"    
 drl_model = args.drl_model.lower()
+
+args.model_time = 'Feb-24-22-27'    # SAC-9
 model_dir = log_dir + drl_model + "-model-%s" % args.model_time
+# model_dir = log_dir + drl_model + "-%s" % args.model_id_time
 data_dir = model_dir + "-data"
 print("-----process %s" % data_dir)
  
@@ -48,4 +51,11 @@ plt.show()
 plt.plot(x_step, crash)
 plt.show()
 plt.plot(x_step, lane)
+plt.show()
+
+start = 1672
+end = 2107
+plt.plot(range(start, end), lane[start: end])
+plt.show()
+plt.plot(range(start, end), spd[start: end])
 plt.show()

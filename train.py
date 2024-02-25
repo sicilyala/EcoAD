@@ -50,9 +50,12 @@ if __name__ == "__main__":
     print(DRL_agent.policy)
     summary(model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1]))  # C*H*W, the same as input
     DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
+    
+    logger_dir = DRL_agent.logger.dir    
+    logger_id = int(logger_dir.split('_')[-1]) 
     now = time.localtime()
     now_str = time.strftime("%b-%d-%H-%M", now)
-    model_dir = log_dir + "/%s-model-%s" % (drl_model, now_str)
+    model_dir = log_dir + "/%s-%d-%s" % (drl_model, logger_id, now_str)
     DRL_agent.save(model_dir)
     print("\n----------Training stopped at %s----------" % time.strftime("%Y-%m-%d %H:%M:%S", now))   
     
