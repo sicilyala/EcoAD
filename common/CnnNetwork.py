@@ -11,7 +11,7 @@ class CustomCNN(BaseFeaturesExtractor):
         This corresponds to the number of unit for the last layer.
     """
 
-    def __init__(self, observation_space: spaces.Box, features_dim: int = 256):
+    def __init__(self, observation_space: spaces.Box, features_dim: int = 64):
         super().__init__(observation_space, features_dim)
         # We assume CxHxW images (channels first)
         # Re-ordering will be done by pre-preprocessing or wrapper
@@ -20,7 +20,7 @@ class CustomCNN(BaseFeaturesExtractor):
         # print(n_input_channels) # [7, 7]
         in_channels =1
         out_channels = 1
-        # TODO how to initialize the kernel? how to decide the kernel size and output channels?
+        # TODO  how to decide the kernel size and output channels?
         self.cnn = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0)),
             nn.ReLU(),

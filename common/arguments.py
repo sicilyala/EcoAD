@@ -12,8 +12,8 @@ def get_args():
     parser.add_argument('--sim_freq', default=100, type=int, help='MUST bigger than act_freq. to show clearly, simulation frequency for only replay')
     
     # DRL method parameters
-    parser.add_argument('--features_dim', default=128, type=int, help="1st layer of 'net_arch' fully connected layer")   
-    parser.add_argument('--net_arch', default=[256, 128], type=list, help='policy net arch')
+    parser.add_argument('--features_dim', default=32, type=int, help="1st layer of 'net_arch' fully connected layer")   
+    parser.add_argument('--net_arch', default=[32, 32], type=list, help='policy net arch')
     parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
     parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
     parser.add_argument('--tau', default=0.001, type=float, help='tau')
@@ -21,11 +21,11 @@ def get_args():
     parser.add_argument('--device', default='auto', type=str, help="auto, cuda, cpu")
     parser.add_argument('--noise', default=0.10, type=float, help='std of Gaussian noise, used for ddpg')
     
-    parser.add_argument('--buffer_size', default=40000, type=int, help='buffer_size')
-    parser.add_argument('--batch_size', default=128, type=int, help='batch_size')
-    parser.add_argument('--total_time_steps', default=40200, type=int,       
+    parser.add_argument('--buffer_size', default=50000, type=int, help='buffer_size')
+    parser.add_argument('--batch_size', default=32, type=int, help='batch_size')
+    parser.add_argument('--total_time_steps', default=200, type=int,       
                         help="the total number of samples (env steps) to train on")    
-    parser.add_argument('--learning_starts', default=200, type=int,
+    parser.add_argument('--learning_starts', default=20, type=int,
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     
     # for training 
@@ -35,10 +35,10 @@ def get_args():
     parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
     
     # for replay evaluation
-    parser.add_argument('--replay_steps', default=1000, type=int,
+    parser.add_argument('--replay_steps', default=50, type=int,
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
-    parser.add_argument('--model_id_time', default='10-Feb-25-11-14', type=str) 
+    parser.add_argument('--model_id_time', default='10-Feb-25-20-21', type=str) 
     args = parser.parse_args()
     return args

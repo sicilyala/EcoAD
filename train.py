@@ -67,5 +67,5 @@ if __name__ == "__main__":
     del DRL_agent
     # evaluation: Load and test the saved model 
     # replay the video 
-    replay(env, model_name=drl_model, model_dir=model_dir, 
+    replay(env, drl_model=drl_model, model_dir=model_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 

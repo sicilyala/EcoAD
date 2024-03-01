@@ -13,27 +13,27 @@ from common.my_utils import print_obs, print_info
 
 
 def replay(env, 
-           model_name: str,
+           drl_model: str,
            model_dir: str, 
            replay_steps: int = 500,
            sim_freq: int = 100,
            ) -> None:
-    DRL_agent = DRL_methods[model_name].load(model_dir)       
-    # DRL_agent.set_parameters(model_dir)
-    # print(DRL_agent.get_parameters()) 
+    DRL_agent = DRL_methods[drl_model].load(model_dir)       
+    print("\n------------%s model structure------------" % drl_model.upper())
+    print(DRL_agent.policy) 
     
     data_dir = model_dir + "-data"
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         
-    print("\n---------- Evaluate %s using %s ----------" % (model_name.upper(), model_dir[-23:]))
+    print("\n---------- Evaluate %s using %s ----------" % (drl_model.upper(), model_dir[-23:]))
     reset_step = [] 
     env.configure({"simulation_frequency": sim_freq})  
     print("action frequency: %d" % env.config["policy_frequency"]) 
     print("simulation frequency: %d" % env.config["simulation_frequency"])
     obs, _ = env.reset() 
     for i in trange(replay_steps, desc='replaying', unit='step'):
-        action, _ = DRL_agent.predict(obs[None], deterministic=False)
+        action, _ = DRL_agent.predict(obs[None], deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action[0])
         scio.savemat(data_dir+"/step%d.mat" % i, mdict=info) 
         
@@ -65,6 +65,6 @@ if __name__ == "__main__":
     drl_model = args.drl_model.lower()
     model_dir = log_dir + drl_model + "-%s" % (args.model_id_time)
     # replay the video/
-    replay(env, model_name=drl_model, model_dir=model_dir, 
+    replay(env, drl_model=drl_model, model_dir=model_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
     
