@@ -37,7 +37,7 @@ def get_args():
     # for replay evaluation
     parser.add_argument('--replay_steps', default=50, type=int,
                         help="the total number of env steps evaluate")
-    parser.add_argument('--dir_name', default="test_Lateral_EMS", type=str)
+    parser.add_argument('--dir_name', default="test_v2_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
     parser.add_argument('--model_id_time', default='10-Feb-25-20-21', type=str) 
     args = parser.parse_args()
