@@ -32,7 +32,7 @@ def get_args():
     parser.add_argument('--train_freq', default=1, type=int, help='Update the model every ``train_freq`` steps')
     parser.add_argument('--gradient_steps', default=-1, type=int, help='Set to ``-1`` means to do as many gradient steps as steps during the rollout')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
-    parser.add_argument('--log_dir', default="test", type=str, help='log_dir')
+    parser.add_argument('--log_dir', default="test_v2", type=str, help='log_dir')
     
     # for replay evaluation
     parser.add_argument('--replay_steps', default=50, type=int,
