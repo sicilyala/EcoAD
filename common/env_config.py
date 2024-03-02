@@ -5,9 +5,12 @@ import math
 def get_config(argus):
     ActionContinuity = argus.action_continuity
     LateralControl = argus.lateral_control
-    MAX_SPD = argus.max_spd
+    MAX_SPD = argus.max_spd     # 30 m/s 
     EMS_flag = argus.ems_flag
     action_frequency = argus.act_freq
+    
+    lane_length = 1000
+    lanes_count = 3
 
     configs = {
         "envname": 'cwqaq-ecoad',
@@ -15,17 +18,18 @@ def get_config(argus):
         "observation": {
             "type": "Kinematics",
             "vehicles_count": 6,  # Number of observed vehicles
-            "features": ["presence", "x", "y", "vx", "vy", "cos_h", "sin_h"],
+            "features": ["x", "y", "vx", "vy", "cos_h", "sin_h"],   # "presence", 
             "ems_features": (['SOC', 'SOH_FCS', 'SOH_BAT', 'P_FCS', 'P_req'] if EMS_flag else []),
             # len(ems_features) must less than len(features)
             "features_range": {
-                "x": [-100, 100],
-                "y": [-100, 100],
+                "x": [-lane_length, lane_length],
+                "y": [-lanes_count, lanes_count],
                 "vx": [-MAX_SPD, MAX_SPD],
                 "vy": [-MAX_SPD, MAX_SPD],
-                "P_FCS": [0, 60],
+                "P_FCS": [-60, 60],
                 "P_req": [-200, 200],},
-            "clip": True,  # Should the value be clipped in the desired range
+            "lanes_count": lanes_count,     # for obs normalization             
+            "clip": False,  # Should the value be clipped in the desired range
             "absolute": False,
             "order": "sorted",
         },
@@ -59,9 +63,9 @@ def get_config(argus):
         
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
-        "lanes_count": 3,
+        "lanes_count": lanes_count,
         "lane_start": 0,
-        "lane_length": 1000000,
+        "lane_length": lane_length,
         "road_spd_limit": MAX_SPD,      # m/s 
         "vehicles_density": 1.5,
         "vehicles_count": 500,

@@ -5,16 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
-            "type": "python",
+            "name": "EcoAD-train",
+            "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "train.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "purpose": ["debug-in-terminal"],
-            "cwd": "${fileDirname}",
+            "cwd": "/home/cwq/EcoAD/",
             "env":{"PYTHONPATH":"${workspaceRoot}"},
             "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
+
+// data_dir = "E:/SEUgo/ECO_AD/"
+// data_dir = "/home/cwq/"  

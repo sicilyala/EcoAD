@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "run DDPG_train",
+            "label": "run train",
             "type": "shell",
             "command": "echo hello"
         }

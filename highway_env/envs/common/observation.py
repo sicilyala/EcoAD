@@ -152,6 +152,7 @@ class KinematicObservation(ObservationType):
                  clip: bool = True,
                  see_behind: bool = False,
                  observe_intentions: bool = False,
+                 lanes_count: int = 4, 
                  **kwargs: dict) -> None:
         """
         :param env: The environment to observe
@@ -173,7 +174,10 @@ class KinematicObservation(ObservationType):
             for i in range(extra0s):
                 self.ems_features.append('extra%d' % i)
         self.vehicles_count = vehicles_count
-        self.features_range = features_range
+        self.features_range = features_range 
+        self.lanes_count = lanes_count
+        self.features_range["y"][0] = -lanes_count * AbstractLane.DEFAULT_WIDTH  
+        self.features_range["y"][1] = lanes_count * AbstractLane.DEFAULT_WIDTH  
         self.absolute = absolute
         self.order = order
         self.normalize = normalize
@@ -229,15 +233,19 @@ class KinematicObservation(ObservationType):
         if df.shape[0] < self.vehicles_count:
             rows = np.zeros((self.vehicles_count - df.shape[0], len(self.features)))
             df = pd.concat([df, pd.DataFrame(data=rows, columns=self.features)], ignore_index=True)
+        # Normalize and clip, only vehicle obs
+        if self.normalize:
+            df = self.normalize_obs(df)
+            
         # Add EMS information to the last row
         if self.ems_features:
             ems_df = pd.DataFrame.from_records([self.observer_vehicle.to_dict()])[self.ems_features]
-            for i in range(len(self.features)):
+            if self.normalize:  
+                ems_df = self.normalize_obs(ems_df)
+            for i in range(len(self.features)):     # change label name 
                 ems_df = ems_df.rename(columns={self.ems_features[i]: self.features[i]})
-            df = pd.concat([df, ems_df], keys=['traffic', 'ems'])
-        # Normalize and clip
-        if self.normalize:
-            df = self.normalize_obs(df)
+            df = pd.concat([df, ems_df], keys=['traffic', 'ems'])          
+            
         # Reorder
         df = df[self.features]
         obs = df.values.copy()
