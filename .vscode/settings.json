@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "ndim",
+        "pygame",
         "torchsummary"
     ],
     "debug.allowBreakpointsEverywhere": true,

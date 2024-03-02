@@ -20,7 +20,7 @@ def replay(env,
            ) -> None:
     DRL_agent = DRL_methods[drl_model].load(model_dir)       
     print("\n------------%s model structure------------" % drl_model.upper())
-    print(DRL_agent.policy) 
+    # print(DRL_agent.policy) 
     
     data_dir = model_dir + "-data"
     if not os.path.exists(data_dir):

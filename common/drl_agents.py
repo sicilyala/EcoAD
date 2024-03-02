@@ -67,6 +67,7 @@ def TD3_agent(env, args, log_dir, action_dim):
 
 
 def SAC_agent(env, args, log_dir, action_dim):
+    # print("\nSAC AGENT is initialized here.\n")
     DRL_agent = SAC(
         policy="CnnPolicy",
         env=env,

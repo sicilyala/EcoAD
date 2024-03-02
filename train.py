@@ -48,7 +48,7 @@ if __name__ == "__main__":
     DRL_agent = DRL_agents[drl_model](env, args, log_dir, action_dim=config["action"]["action_dim"])
     print("\n------------%s model structure------------" % drl_model.upper())
     print(DRL_agent.policy)
-    summary(model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1]))  # C*H*W, the same as input
+    summary(model=DRL_agent.policy, input_size=(1, obs.shape[0], obs.shape[1]))  # input_size C*H*W, the same as input  
     DRL_agent.learn(total_timesteps=args.total_time_steps, log_interval=1)
     
     logger_dir = DRL_agent.logger.dir    
