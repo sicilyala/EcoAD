@@ -28,7 +28,7 @@ class FCHEV_SOH:
         if sys.platform == 'win32':
             data_dir = "E:/SEUgo/ECO_AD/FCHEV_power_data/"
         else:            
-            data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
+            data_dir = "/home/cwq/FCHEV_power_data/"  # car data from BIT
         # fuel cell engine
         data = scio.loadmat(data_dir+'P_fc.mat')
         P_fc = data['P_fc'][0]   # attention: kW

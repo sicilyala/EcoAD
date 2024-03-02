@@ -157,7 +157,7 @@ class CellModel_2:
         if sys.platform == 'win32':
             data_dir = "E:/SEUgo/ECO_AD/FCHEV_power_data/"
         else:            
-            data_dir = "/home/seu/cwqaq/FCHEV_power_data/"  # car data from BIT
+            data_dir = "/home/cwq/FCHEV_power_data/"  # car data from BIT            
         self.ocv_func = pickle.load(open(data_dir+'ocv.pkl', 'rb'))
 
     def run_cell(self, P_batt, paras_list):
