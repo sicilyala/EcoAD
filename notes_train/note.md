@@ -18,3 +18,11 @@ On Feb 21, at 10:02, SAC-7, 50Hz, buffer_size=10000, batch_size=128, steps=50200
 On Feb 24, at 07:58, SAC-8, 50Hz, buffer_size=20000, batch_size=128, steps=40200;
 On Feb 24, at 22:27, SAC-9, 50Hz, buffer_size=40000, batch_size=128, steps=40200;
 
+Mar. 2, 23:00, test_v2, SAC-1:
+'--features_dim', default=32, 
+'--net_arch', default=[32, 32],
+'--batch_size', default=128, 
+'--total_time_steps', default=40200,
+![alt text](image-2.png)
+
+
