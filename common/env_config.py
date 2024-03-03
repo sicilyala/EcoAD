@@ -22,11 +22,11 @@ def get_config(argus):
             "ems_features": (['SOC', 'SOH_FCS', 'SOH_BAT', 'P_FCS', 'P_req'] if EMS_flag else []),
             # len(ems_features) must less than len(features)
             "features_range": {
-                "x": [-lane_length, lane_length],
-                "y": [-lanes_count, lanes_count],
-                "vx": [-MAX_SPD, MAX_SPD],
-                "vy": [-MAX_SPD, MAX_SPD],
-                "P_FCS": [-60, 60],
+                "x": [0, lane_length],
+                "y": [0, lanes_count],
+                "vx": [0, MAX_SPD],
+                "vy": [0, MAX_SPD],
+                "P_FCS": [0, 60],
                 "P_req": [-200, 200],},
             "lanes_count": lanes_count,     # for obs normalization             
             "clip": False,  # Should the value be clipped in the desired range

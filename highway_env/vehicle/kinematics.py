@@ -270,7 +270,5 @@ class Vehicle(RoadObject):
         print('\n-----here is in Vehicle.kinematics.total_demand_power,'
               '\n     car_spd: %.3f m/s, car_acc: %.3f m/s2, P_axle: %.1f kW,' % (car_spd, car_acc, P_axle))
         print('     action: ', self.action, '-----')
-        return P_axle
-        
-        
+        return P_axle      
         

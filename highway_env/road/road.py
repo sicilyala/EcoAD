@@ -223,8 +223,8 @@ class RoadNetwork(object):
         net = net or RoadNetwork()
         nodes_str = nodes_str or ("0", "1")
         for lane in range(lanes):
-            origin = np.array([start, lane * StraightLane.DEFAULT_WIDTH])
-            end = np.array([start + length, lane * StraightLane.DEFAULT_WIDTH])
+            origin = np.array([start, (lane+0.5) * StraightLane.DEFAULT_WIDTH])
+            end = np.array([start + length, (lane+0.5) * StraightLane.DEFAULT_WIDTH])
             rotation = np.array([[np.cos(angle), np.sin(angle)], [-np.sin(angle), np.cos(angle)]])
             origin = rotation @ origin
             end = rotation @ end

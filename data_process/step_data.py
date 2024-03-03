@@ -5,12 +5,15 @@ from common.arguments import get_args
 
 
 args = get_args()
-log_dir = "../EcoHighway_DRL/" + args.dir_name + "/"    
+log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"    
 drl_model = args.drl_model.lower()
 
-args.model_time = 'Feb-24-22-27'    # SAC-9
-model_dir = log_dir + drl_model + "-model-%s" % args.model_time
-# model_dir = log_dir + drl_model + "-%s" % args.model_id_time
+# test-v1
+# args.model_time = 'Feb-24-22-27'    # SAC-9
+# model_dir = log_dir + drl_model + "-model-%s" % args.model_time
+
+# test-v2 
+model_dir = log_dir + drl_model + "-%s" % args.model_id_time
 data_dir = model_dir + "-data"
 print("-----process %s" % data_dir)
  
@@ -26,6 +29,13 @@ lane = []
 
 for i in range(args.replay_steps):
     datai = scio.loadmat(data_dir+"/step%d"%i)
+    
+    rewards = datai["rewards"]
+    EMS_info = datai["EMS_info"]
+    
+    print(type(rewards))
+    print(rewards)
+    print(rewards.dtype())
     
     actions = datai["action"][0]
     action_0.append(actions[0])

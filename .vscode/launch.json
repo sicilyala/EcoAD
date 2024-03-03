@@ -5,19 +5,34 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "EcoAD-train",
+            "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "train.py",
+            "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "purpose": ["debug-in-terminal"],
-            "cwd": "/home/cwq/EcoAD/",
-            "env":{"PYTHONPATH":"${workspaceRoot}"},
+            "env": {
+                "PYTHONPATH": "${workspaceRoot}"
+            },
             "envFile": "${workspaceFolder}/.env"
-        }
+        },
+        // {
+        //     "name": "EcoAD-train",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "train.py",
+        //     "console": "integratedTerminal",
+        //     "justMyCode": false,
+        //     "purpose": [
+        //         "debug-in-terminal"
+        //     ],
+        //     "cwd": "/home/cwq/EcoAD/",
+        //     "env": {
+        //         "PYTHONPATH": "${workspaceRoot}"
+        //     },
+        //     "envFile": "${workspaceFolder}/.env"
+        // }
     ]
 }
-
 // data_dir = "E:/SEUgo/ECO_AD/"
 // data_dir = "/home/cwq/"  

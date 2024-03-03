@@ -68,17 +68,35 @@ class EcoADEnv(AbstractEnv):
                                                                    np_random=self.np_random, 
                                                                    record_history=self.config["show_trajectories"])
         self.lanes_list = self.road.network.lanes_list()
-        self.lanes_centers = {}     # 
-        for lane in self.lanes_list:            
-            lane_width = lane.width_at(lane.start)
+        self.lanes_centers = {}      
+        self.lanes_bounds = {}  
+        for lane in self.lanes_list:     
+            lane_width = lane.width_at(lane.start)      # 4 meters
             # print(lane_width)
             lane_id = self.road.network.get_closest_lane_index(lane.start)[2] 
-            lane_center = (0.5+lane_id)*lane_width
-            self.lanes_centers.update({lane_id: lane_center}) 
-            # print('lane {}, center at {}, start at {}, end at {}'.format(lane_id, lane_center, lane.start, lane.end))
-        # print(self.lanes_centers)
+            center = lane.start[1] 
+            self.lanes_centers.update({lane_id: center}) 
+            low_bound = center - lane_width*0.5
+            up_bound = center + lane_width*0.5
+            self.lanes_bounds.update({lane_id: [low_bound, up_bound]})            
+        #     print('lane {}, center line starts at {}, ends at {}'.format(lane_id, lane.start, lane.end))
+            
+        # print('lanes_centers, position-y:', self.lanes_centers)
+        # print('lanes_bounds, position-y:', self.lanes_bounds)
         # print(self.lanes_list)  
-        self.lane_width = lane_width
+        self.lane_width = lane_width 
+        
+        # debug lanes' lines 
+        # y = np.linspace(-1, 13, 141)
+        # x = [100] * 141
+        # xyid = []
+        # lxy = list(zip(x, y))
+        # for i in range(141):
+        #     iiid = self.road.network.get_closest_lane_index(np.array(lxy[i]))[2]
+        #     xyid.append(iiid)
+        # print(xyid)
+        # pos_y2id = [y.tolist(), xyid]
+        # print("a")
 
     def _create_vehicles(self) -> None:
         """Create some new random vehicles of a given type, and add them on the road."""

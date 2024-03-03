@@ -176,7 +176,7 @@ class KinematicObservation(ObservationType):
         self.vehicles_count = vehicles_count
         self.features_range = features_range 
         self.lanes_count = lanes_count
-        self.features_range["y"][0] = -lanes_count * AbstractLane.DEFAULT_WIDTH  
+        # self.features_range["y"][0] = 0 * AbstractLane.DEFAULT_WIDTH  
         self.features_range["y"][1] = lanes_count * AbstractLane.DEFAULT_WIDTH  
         self.absolute = absolute
         self.order = order
@@ -206,7 +206,10 @@ class KinematicObservation(ObservationType):
             }
         for feature, f_range in self.features_range.items():
             if feature in df:
-                df[feature] = utils.lmap(df[feature], [f_range[0], f_range[1]], [-1, 1])
+                if f_range[0] == 0:
+                    df[feature] = utils.lmap(df[feature], [f_range[0], f_range[1]], [0, 1])
+                else:
+                    df[feature] = utils.lmap(df[feature], [f_range[0], f_range[1]], [-1, 1])
                 if self.clip:
                     df[feature] = np.clip(df[feature], -1, 1)
         return df
