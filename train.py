@@ -7,7 +7,7 @@ from torchsummary import summary
 from highway_env import register_highway_envs
 from common.arguments import get_args
 from common.env_config import show_config, get_config
-from common.my_utils import print_info, print_obs, print_Hr_Min
+from common.my_utils import print_info, print_obs, print_Hr_Min, extract_len_rew
 from common.drl_agents import DRL_agents 
 from common.AutoLog import AutoLog
 from replay import replay
@@ -85,3 +85,4 @@ if __name__ == "__main__":
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
     # change log dir 
     os.rename(log_dir+"/"+log_name, os.path.join(logger_dir, 'training.log'))
+    extract_len_rew(logger_dir, 'training.log')       

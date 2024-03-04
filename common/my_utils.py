@@ -1,5 +1,7 @@
 import pandas as pd 
 from typing import Callable
+import re 
+import scipy.io as scio
 
 
 def linear_schedule(initial_value: float) -> Callable[[float], float]:
@@ -75,3 +77,21 @@ def print_Hr_Min(seconds: float):
     hr, sec = divmod(seconds, 3600)
     min, _ = divmod(sec, 60)
     print("training time cost: %d hours %d minutes." % (hr, min))
+
+
+def extract_len_rew(filepath, filename):
+    ep_len_mean = []
+    ep_rew_mean = []
+
+    with open(filepath+"/"+filename) as f:
+        lines = f.readlines()
+    for line in lines: 
+        if re.match('.*ep_rew_mean.*', line): 
+            l = line.split("|")  
+            ep_rew_mean.append(float(l[2])) 
+        if re.match('.*ep_len_mean.*', line): 
+            ll = line.split("|")  
+            ep_len_mean.append(float(ll[2])) 
+    scio.savemat(filepath+"/ep_rew_mean.mat", mdict={'ep_rew_mean': ep_rew_mean})
+    scio.savemat(filepath+"/ep_len_mean.mat", mdict={'ep_len_mean': ep_len_mean})
+    
