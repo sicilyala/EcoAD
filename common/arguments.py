@@ -22,10 +22,10 @@ def get_args():
     parser.add_argument('--noise', default=0.10, type=float, help='std of Gaussian noise, used for ddpg')
     
     parser.add_argument('--buffer_size', default=50000, type=int, help='buffer_size')
-    parser.add_argument('--batch_size', default=128, type=int, help='batch_size')
-    parser.add_argument('--total_time_steps', default=40200, type=int,       
+    parser.add_argument('--batch_size', default=128, type=int, help='batch_size')   # 128
+    parser.add_argument('--total_time_steps', default=40200, type=int,          # 40200
                         help="the total number of samples (env steps) to train on")    
-    parser.add_argument('--learning_starts', default=200, type=int,
+    parser.add_argument('--learning_starts', default=200, type=int,         # 200
                         help='how many steps for the DRL agent to collect transitions before starting learning ')
     
     # for training 
@@ -35,10 +35,10 @@ def get_args():
     parser.add_argument('--log_dir', default="test_v2", type=str, help='log_dir')
     
     # for replay evaluation
-    parser.add_argument('--replay_steps', default=1000, type=int,
+    parser.add_argument('--replay_steps', default=1000, type=int,   # 1000
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_v2_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
-    parser.add_argument('--model_id_time', default='1-Mar-03-09-31', type=str) 
+    parser.add_argument('--model_id', default='3', type=str) 
     args = parser.parse_args()
     return args

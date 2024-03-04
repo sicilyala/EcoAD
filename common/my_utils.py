@@ -70,3 +70,8 @@ def print_info(info_dict):
             print("{}: {}".format(key, value))
     print("*" * sn)
 
+
+def print_Hr_Min(seconds: float):
+    hr, sec = divmod(seconds, 3600)
+    min, _ = divmod(sec, 60)
+    print("training time cost: %d hours %d minutes." % (hr, min))

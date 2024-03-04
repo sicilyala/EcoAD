@@ -14,19 +14,20 @@ from common.my_utils import print_obs, print_info
 
 def replay(env, 
            drl_model: str,
-           model_dir: str, 
+           logger_dir: str, 
            replay_steps: int = 500,
            sim_freq: int = 100,
            ) -> None:
-    DRL_agent = DRL_methods[drl_model].load(model_dir)       
-    print("\n------------%s model structure------------" % drl_model.upper())
+    model_dir = logger_dir + "/learned_%s_model" % (drl_model.upper())   
+    DRL_agent = DRL_methods[drl_model.lower()].load(model_dir)       
+    # print("\n------------%s model structure------------" % drl_model.upper())
     # print(DRL_agent.policy) 
     
-    data_dir = model_dir + "-data"
+    data_dir = logger_dir + "/replay_data"
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         
-    print("\n---------- Evaluate %s using %s ----------" % (drl_model.upper(), model_dir[-23:]))
+    print("\n---------- Evaluate %s using %s ----------" % (drl_model.upper(), logger_dir[-6:]))
     reset_step = [] 
     env.configure({"simulation_frequency": sim_freq})  
     print("action frequency: %d" % env.config["policy_frequency"]) 
@@ -53,8 +54,7 @@ def replay(env,
     plt.imshow(env.render()) 
     
 
-if __name__ == "__main__":
-    # python .\replay.py --drl_model 'ddpg' --model_time Jan-17-11-35
+if __name__ == "__main__": 
     print("\nCommand line arguments: ", sys.argv)
     # env config
     register_highway_envs()
@@ -62,9 +62,9 @@ if __name__ == "__main__":
     config = get_config(args)
     env = gym.make("EcoAD-v0", render_mode="rgb_array", config=config)
     log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"    
-    drl_model = args.drl_model.lower()
-    model_dir = log_dir + drl_model + "-%s" % (args.model_id_time)
+    drl_model = args.drl_model
+    logger_dir = log_dir + drl_model.upper() + "_" + args.model_id
     # replay the video/
-    replay(env, drl_model=drl_model, model_dir=model_dir, 
+    replay(env, drl_model=drl_model, logger_dir=logger_dir, 
            replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
     
