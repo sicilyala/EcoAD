@@ -11,7 +11,7 @@ import sys
 
 class CellModel_1:
     def __init__(self):
-        self.timestep = 1
+        self.timestep = 1/50
         self.I_max = 460  # Battery current limitation
         self.Q_batt = 25  # Ah
         # Nominal battery accumulate Ah-throughput

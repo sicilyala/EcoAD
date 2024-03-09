@@ -9,7 +9,7 @@ import sys
 
 class FCHEV_SOH:
     def __init__(self):
-        self.simtime = 1.0        # length of a time step
+        self.simtime = 1.0/50         # length of a time step
         # fuel cell model
         self.motor_max_power = 200000  # W
         self.P_FC_max = 60.0   # kW
@@ -164,6 +164,7 @@ class FCHEV_SOH:
         # load changing cycles
         # d_l_c = 5.93*1e-5*abs(P_fc-self.P_FC_old)/(self.P_FC_high-self.P_FC_low)
         d_l_c = 5.93*abs(P_fc-self.P_FC_old)/(self.P_FC_high-self.P_FC_low)
+        d_l_c *= self.simtime
         # d_l_c = self.simtime * 3.32 * 1e-3 / 3600
         
         # total degradation in current time step

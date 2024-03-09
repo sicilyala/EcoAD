@@ -6,7 +6,7 @@ from highway_env.vehicle.Cell import CellModel_2
 class EMS:
     """ EMS with SOH """
     def __init__(self, w_soc, soc0, SOC_MODE, abs_spd_MAX, abs_acc_MAX):
-        self.time_step = 1.0
+        self.time_step = 1.0/50     
         self.w_soc = w_soc
         self.done = False
         self.info = {}
