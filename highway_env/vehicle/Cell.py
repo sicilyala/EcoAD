@@ -135,7 +135,7 @@ class CellModel_1:
 
 class CellModel_2:
     def __init__(self):
-        self.timestep = 1
+        self.timestep = 1/50
         self.cell_n = 8       # n串, 6串对应最大输出功率是150kW
         self.batt_maxpower = self.cell_n * 25 * 1000  # W      [200kW, 9.893kWh]
         # used in electric model
