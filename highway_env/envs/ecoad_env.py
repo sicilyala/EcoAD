@@ -143,7 +143,7 @@ class EcoADEnv(AbstractEnv):
     def _rewards(self, action: Action) -> Dict[Text, float]:
         neighbours = self.road.network.all_side_lanes(self.vehicle.lane_index)  # return: all lanes belonging to the same road.
         lane = self.vehicle.target_lane_index[2] if isinstance(self.vehicle, ControlledVehicle) \
-            else self.vehicle.lane_index[2]
+            else self.vehicle.lane_index[2]     # with heading 
         
         # safety reward 
         r_safety = -2.0 if self.vehicle.crashed else 1.0  
@@ -157,7 +157,8 @@ class EcoADEnv(AbstractEnv):
         # driving on the center line of lane
         lane_center_lateral_position = self.lanes_centers[lane]
         vehicle_lateral_position = self.vehicle.position[1]    # y coordinate 
-        r_center = 0.5*self.lane_width - abs(vehicle_lateral_position - lane_center_lateral_position) # maximum: 2
+        # r_center = 0.5*self.lane_width - abs(vehicle_lateral_position - lane_center_lateral_position) # maximum: 2
+        r_center = -abs(vehicle_lateral_position - lane_center_lateral_position) # [-2, 0]
         
         # high speed reward, efficiency 
         # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
