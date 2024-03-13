@@ -9,7 +9,7 @@ def get_config(argus):
     EMS_flag = argus.ems_flag
     action_frequency = argus.act_freq
     
-    lane_length = 1000
+    lane_length = 2000
     lanes_count = 3
 
     configs = {
@@ -17,20 +17,21 @@ def get_config(argus):
         # observation 
         "observation": {
             "type": "Kinematics",
-            "vehicles_count": 6,  # Number of observed vehicles
-            "features": ["x", "y", "vx", "vy", "cos_h", "sin_h"],   # "presence", 
+            "vehicles_count": 6,  # Number of observed vehicles, including the ego vehicle 
+            "features": ["presence", "x", "y", "vx", "vy", "cos_h", "sin_h"],   
+            "ems_obs_flag": False,
             "ems_features": (['SOC', 'SOH_FCS', 'SOH_BAT', 'P_FCS', 'P_req'] if EMS_flag else []),
             # len(ems_features) must less than len(features)
             "features_range": {
-                "x": [0, lane_length],
-                "y": [0, lanes_count],
-                "vx": [0, MAX_SPD],
-                "vy": [0, MAX_SPD],
+                "x": [-lane_length, lane_length],
+                "y": [-lanes_count, lanes_count],
+                "vx": [-MAX_SPD, MAX_SPD],
+                "vy": [-MAX_SPD, MAX_SPD],
                 "P_FCS": [0, 60],
                 "P_req": [-200, 200],},
             "lanes_count": lanes_count,     # for obs normalization             
             "clip": False,  # Should the value be clipped in the desired range
-            "absolute": False,
+            "absolute": True,
             "order": "sorted",
         },
         # action 
@@ -38,7 +39,7 @@ def get_config(argus):
         "action": {
             "type": "ContinuousAction" if ActionContinuity else "DiscreteMetaAction",
             "acceleration_range": [-2.0, 2.0],  # m/s2
-            "speed_range": [-MAX_SPD, MAX_SPD],  # m/s
+            "speed_range": [0, MAX_SPD],  # m/s
             "lateral": LateralControl,
             "steering_range": [-math.pi / 4, math.pi / 4],  # 0.7854 rad
             "ems_flag": EMS_flag,

@@ -144,6 +144,7 @@ class KinematicObservation(ObservationType):
     def __init__(self, env: 'AbstractEnv',
                  features: List[str] = None,
                  ems_features: List[str] = None,
+                 ems_obs_flag: bool = False,
                  vehicles_count: int = 5,
                  features_range: Dict[str, List[float]] = None,
                  absolute: bool = False,
@@ -169,6 +170,7 @@ class KinematicObservation(ObservationType):
         super().__init__(env)
         self.features = features or self.FEATURES
         self.ems_features = ems_features
+        self.ems_obs_flag = ems_obs_flag
         if self.ems_features:
             extra0s = int(len(self.features) - len(self.ems_features))
             for i in range(extra0s):
@@ -177,6 +179,7 @@ class KinematicObservation(ObservationType):
         self.features_range = features_range 
         self.lanes_count = lanes_count
         # self.features_range["y"][0] = 0 * AbstractLane.DEFAULT_WIDTH  
+        self.features_range["y"][0] = -lanes_count * AbstractLane.DEFAULT_WIDTH 
         self.features_range["y"][1] = lanes_count * AbstractLane.DEFAULT_WIDTH  
         self.absolute = absolute
         self.order = order
@@ -186,7 +189,7 @@ class KinematicObservation(ObservationType):
         self.observe_intentions = observe_intentions
 
     def space(self) -> spaces.Space:
-        obs_shape0 = self.vehicles_count + 1 if self.ems_features else self.vehicles_count
+        obs_shape0 = self.vehicles_count + 1 if self.ems_obs_flag else self.vehicles_count
         return spaces.Box(shape=(obs_shape0, len(self.features)), low=-np.inf, high=np.inf, dtype=np.float32)
 
     def normalize_obs(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -241,7 +244,7 @@ class KinematicObservation(ObservationType):
             df = self.normalize_obs(df)
             
         # Add EMS information to the last row
-        if self.ems_features:
+        if self.ems_obs_flag:   # False     ems_obs_flag    ems_features
             ems_df = pd.DataFrame.from_records([self.observer_vehicle.to_dict()])[self.ems_features]
             if self.normalize:  
                 ems_df = self.normalize_obs(ems_df)
