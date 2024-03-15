@@ -12,8 +12,8 @@ def get_args():
     parser.add_argument('--sim_freq', default=100, type=int, help='MUST bigger than act_freq. to show clearly, simulation frequency for only replay')
     
     # DRL method parameters
-    parser.add_argument('--features_dim', default=32, type=int, help="1st layer of 'net_arch' fully connected layer")   
-    parser.add_argument('--net_arch', default=[32, 32], type=list, help='policy net arch')
+    parser.add_argument('--features_dim', default=24, type=int, help="1st layer of 'net_arch' fully connected layer")   
+    parser.add_argument('--net_arch', default=[32, 16], type=list, help='policy net arch')
     parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
     parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
     parser.add_argument('--tau', default=0.001, type=float, help='tau')
@@ -39,6 +39,6 @@ def get_args():
                         help="the total number of env steps evaluate")
     parser.add_argument('--dir_name', default="test_v2_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
-    parser.add_argument('--model_id', default='3', type=str) 
+    parser.add_argument('--model_id', default='5', type=str) 
     args = parser.parse_args()
     return args
