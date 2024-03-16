@@ -23,7 +23,8 @@ class CustomCNN(BaseFeaturesExtractor):
         # TODO  how to decide the kernel size and output channels?
         self.cnn = nn.Sequential(
             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0)),
-            nn.ReLU(),
+            # nn.ReLU(),
+            nn.ELU(),
             # nn.Conv2d(in_channels=out_channels, out_channels=2, kernel_size=(2, 2), stride=(1, 1), padding=(0, 0)),
             # nn.ReLU(),
             # nn.MaxPool2d(kernel_size=(2, 2), stride=(1, 1)),
@@ -44,7 +45,8 @@ class CustomCNN(BaseFeaturesExtractor):
             # print('n_flatten: ', n_flatten)     
 
         self.linear = nn.Sequential(nn.Linear(n_flatten, features_dim),   
-                                    nn.ReLU())
+                                    # nn.ReLU(),
+                                    nn.ELU(),)
 
     def forward(self, observations: th.Tensor) -> th.Tensor:
         # print('CNN here')

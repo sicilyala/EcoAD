@@ -1,4 +1,5 @@
 import numpy as np
+from torch import nn
 from stable_baselines3 import DQN, DDPG, TD3, SAC, A2C, PPO
 from stable_baselines3.common.noise import NormalActionNoise
 
@@ -58,6 +59,7 @@ def DDPG_agent(env, args, log_dir, action_dim):
         device=args.device,
         tensorboard_log=log_dir,
         # _init_setup_model=False,
+        # actor_activation_fn_ELU=True,
     ) 
     return DRL_agent
 
