@@ -12,8 +12,8 @@ def get_args():
     parser.add_argument('--sim_freq', default=100, type=int, help='MUST bigger than act_freq. to show clearly, simulation frequency for only replay')
     
     # DRL method parameters
-    parser.add_argument('--features_dim', default=24, type=int, help="1st layer of 'net_arch' fully connected layer")   
-    parser.add_argument('--net_arch', default=[32, 16], type=list, help='policy net arch')
+    parser.add_argument('--features_dim', default=32, type=int, help="1st layer of 'net_arch' fully connected layer")   
+    parser.add_argument('--net_arch', default=[32, 32], type=list, help='policy net arch')
     parser.add_argument('--LR', default=1e-3, type=float, help='maximal learning_rate')
     parser.add_argument('--LR_min', default=1e-5, type=float, help='minimal learning_rate')
     parser.add_argument('--tau', default=0.001, type=float, help='tau')

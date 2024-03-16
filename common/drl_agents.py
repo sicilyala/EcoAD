@@ -70,14 +70,15 @@ def SAC_agent(env, args, log_dir, action_dim):
     # print("\nSAC AGENT is initialized here.\n")
     DRL_agent = SAC(
         policy="CnnPolicy",
+        # policy="MlpPolicy",
         env=env,
         policy_kwargs=dict(
             features_extractor_class=CustomCNN,
             features_extractor_kwargs=dict(features_dim=args.features_dim),
             net_arch=args.net_arch,  # default [256, 128]    args.net_arch
         ),
-        # learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),  
-        learning_rate=triangular_schedule(max_LR=args.LR, min_LR=args.LR_min),
+        learning_rate=triangular2_schedule(max_LR=args.LR, min_LR=args.LR_min),  
+        # learning_rate=triangular_schedule(max_LR=args.LR, min_LR=args.LR_min),
         buffer_size=args.buffer_size,
         learning_starts=args.learning_starts,
         batch_size=args.batch_size,

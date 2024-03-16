@@ -257,7 +257,7 @@ class KinematicObservation(ObservationType):
         obs = df.values.copy()
         if self.order == "shuffled":
             self.env.np_random.shuffle(obs[1:])
-        # Flatten
+ 
         return obs.astype(self.space().dtype)
 
 
