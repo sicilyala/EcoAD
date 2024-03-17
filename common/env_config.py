@@ -9,6 +9,12 @@ def get_config(argus):
     EMS_flag = argus.ems_flag
     action_frequency = argus.act_freq
     
+    # reward coefficient 
+    w_center_line_reward = argus.w_center
+    w_comfort_reward = argus.w_comfort
+    w_high_speed_reward = argus.w_spd
+    w_EMS_reward = argus.w_ems
+    
     lane_length = 2000
     lanes_count = 3
 
@@ -53,14 +59,14 @@ def get_config(argus):
         "offroad_terminal": True, # activate off-road terminal 
         
         # reward weight coefficients 
+        # "lane_change_reward": 1.0,  # The reward received at each lane change action.     
         "collision_reward": 1.0,  # The reward received when colliding with a vehicle.
         "on_road_reward": 1.0,  # True of False
         "left_lane_reward": 1.0, # The reward received when driving on the right-most lanes, linearly mapped to zero for other lanes.
-        "center_line_reward": 1.0,
-        "high_speed_reward": 2.0,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
-        "comfort_reward": 1.0, 
-        "EMS_reward": 1.0,     # it's actually the weight coefficient        
-        "lane_change_reward": 1.0,  # The reward received at each lane change action.         
+        "center_line_reward": w_center_line_reward,
+        "comfort_reward": w_comfort_reward, 
+        "high_speed_reward": w_high_speed_reward,  # The reward received when driving at full speed, linearly mapped to zero for lower speeds according to config["reward_speed_range"].
+        "EMS_reward": w_EMS_reward,     # it's actually the weight coefficient            
         
         # environment
         "other_vehicles_type": "highway_env.vehicle.behavior.IDMVehicle",
@@ -94,4 +100,12 @@ def show_config(configs):
     print('obs_vehicles_count: ', configs["vehicles_count"])
     print('policy_frequency: ', configs['policy_frequency'])
     print('simulation_frequency: ', configs['simulation_frequency'])
+    print('\nweight coefficients of rewards:')
+    print('collision_reward: %.1f' % configs["collision_reward"]) 
+    print('on_road_reward: %.1f' % configs["on_road_reward"]) 
+    print('left_lane_reward: %.1f' % configs["left_lane_reward"])  
+    print('center_line_reward: %.1f' % configs["center_line_reward"]) 
+    print('comfort_reward: %.1f' % configs["comfort_reward"]) 
+    print('high_speed_reward: %.1f' % configs["high_speed_reward"]) 
+    print('EMS_reward: %.1f' % configs["EMS_reward"])  
     print('----------------------------------')

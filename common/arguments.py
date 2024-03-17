@@ -32,13 +32,20 @@ def get_args():
     parser.add_argument('--train_freq', default=1, type=int, help='Update the model every ``train_freq`` steps')
     parser.add_argument('--gradient_steps', default=-1, type=int, help='Set to ``-1`` means to do as many gradient steps as steps during the rollout')
     parser.add_argument('--seed', default=1, type=int, help='random seed')
-    parser.add_argument('--log_dir', default="test_v2", type=str, help='log_dir')
+    parser.add_argument('--log_dir', default="test_v3", type=str, help='log_dir')
     
     # for replay evaluation
     parser.add_argument('--replay_steps', default=1000, type=int,   # 1000
                         help="the total number of env steps evaluate")
-    parser.add_argument('--dir_name', default="test_v2_Lateral_EMS", type=str)
+    parser.add_argument('--dir_name', default="test_v3_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
-    parser.add_argument('--model_id', default='7', type=str) 
+    parser.add_argument('--model_id', default='1', type=str) 
+    
+    # reward coefficient  
+    parser.add_argument('--w_center', default=1.0, type=float) 
+    parser.add_argument('--w_comfort', default=1.0, type=float) 
+    parser.add_argument('--w_spd', default=2.0, type=float) 
+    parser.add_argument('--w_ems', default=1.0, type=float) 
+    
     args = parser.parse_args()
     return args

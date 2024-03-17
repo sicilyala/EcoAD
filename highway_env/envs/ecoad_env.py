@@ -162,7 +162,8 @@ class EcoADEnv(AbstractEnv):
         
         # high speed reward, efficiency 
         # Use forward speed rather than speed, see https://github.com/eleurent/highway-env/issues/268
-        forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
+        # forward_speed = self.vehicle.speed * np.cos(self.vehicle.heading)
+        forward_speed = self.vehicle.speed  
         r_speed = utils.lmap(forward_speed, self.config["reward_speed_range"], [0, 1])     # 20 -> -1.0, 30 -> 1.0 
         
         # comfort reward 
