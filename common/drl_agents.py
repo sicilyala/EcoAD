@@ -97,7 +97,7 @@ def SAC_agent(env, args, log_dir, action_dim):
         seed=args.seed,
         device=args.device,
         tensorboard_log=log_dir,
-        # _init_setup_model=False,
+        # _init_setup_model=False, 
     )    
     return DRL_agent
 

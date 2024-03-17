@@ -43,10 +43,15 @@ def replay(env,
         env.render()
         if terminated or truncated:
             last_reset = reset_step[-1] if reset_step else 0
-            print("\n[reset] at step %d, safe driving lasts for %d steps." % (i, i-last_reset))
+            print("\n[reset] at step %d, safe driving lasts for %d steps." % (i+1, i-last_reset))
             reset_step.append(i)
             obs, _ = env.reset()
-   
+        
+        if i == replay_steps-1:
+            last_reset = reset_step[-1] if reset_step else 0
+            print("\n[stopped] at step %d, safe driving lasts for %d steps." % (i+1, i-last_reset)) 
+            obs, _ = env.reset()
+              
     epi_mean_length = replay_steps/(1+len(reset_step))
     print('\nepi_mean_length: {:.1f}, reset steps: {}\n'.format(epi_mean_length, reset_step))
     reset_data = {'reset_step': reset_step, 'epi_mean_length': epi_mean_length}
