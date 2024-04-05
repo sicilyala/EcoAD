@@ -11,5 +11,6 @@ common/SAC_train.py
 common/DQN_train.py
 step_data.py
 /notes_train/
+.vscode/
 
 

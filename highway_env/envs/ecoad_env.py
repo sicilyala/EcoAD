@@ -110,7 +110,7 @@ class EcoADEnv(AbstractEnv):
                 self.road,
                 speed=25,
                 lane_id=self.config["initial_lane_id"],
-                spacing=self.config["ego_spacing"]
+                spacing=self.config["ego_spacing"]  # "ego_spacing": 2,
             )
             vehicle = self.action_type.vehicle_class(self.road, vehicle.position, vehicle.heading, vehicle.speed)
             self.controlled_vehicles.append(vehicle)
