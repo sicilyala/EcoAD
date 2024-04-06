@@ -17,6 +17,7 @@ def get_config(argus):
     
     lane_length = 2000
     lanes_count = 3
+    vehicles_density = argus.vehicles_density
 
     configs = {
         "envname": 'cwqaq-ecoad',
@@ -74,7 +75,7 @@ def get_config(argus):
         "lane_start": 0,
         "lane_length": lane_length,
         "road_spd_limit": MAX_SPD,      # m/s 
-        "vehicles_density": 1.5,
+        "vehicles_density": vehicles_density,
         "vehicles_count": 500,
         "initial_spacing": 3,
         "duration": 100,  # [s]
@@ -98,6 +99,7 @@ def show_config(configs):
     print('action_type: ', configs["action"]["type"])
     print('lanes_count: ', configs["lanes_count"])  
     print('obs_vehicles_count: ', configs["vehicles_count"])
+    print('vehicles_density: ', configs['vehicles_density'])
     print('policy_frequency: ', configs['policy_frequency'])
     print('simulation_frequency: ', configs['simulation_frequency'])
     print('\nweight coefficients of rewards:')

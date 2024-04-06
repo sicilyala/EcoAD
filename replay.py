@@ -17,13 +17,14 @@ def replay(env,
            logger_dir: str, 
            replay_steps: int = 500,
            sim_freq: int = 100,
+           vehicles_density: float = 1.5,
            ) -> None:
     model_dir = logger_dir + "/learned_%s_model" % (drl_model.upper())   
     DRL_agent = DRL_methods[drl_model.lower()].load(model_dir)       
     # print("\n------------%s model structure------------" % drl_model.upper())
     # print(DRL_agent.policy) 
     
-    data_dir = logger_dir + "/replay_data"
+    data_dir = logger_dir + "/replay_data_vehicles_density%.1f" % vehicles_density
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
         
@@ -68,8 +69,8 @@ if __name__ == "__main__":
     env = gym.make("EcoAD-v0", render_mode="rgb_array", config=config)
     log_dir = "./EcoHighway_DRL/" + args.dir_name + "/"    
     drl_model = args.drl_model
-    logger_dir = log_dir + drl_model.upper() + "_" + args.model_id
+    logger_dir = log_dir + drl_model.upper() + "_" + args.model_id    
     # replay the video/
     replay(env, drl_model=drl_model, logger_dir=logger_dir, 
-           replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
+           replay_steps=args.replay_steps, sim_freq=args.sim_freq, vehicles_density = args.vehicles_density) 
     

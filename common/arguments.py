@@ -37,9 +37,10 @@ def get_args():
     # for replay evaluation
     parser.add_argument('--replay_steps', default=1000, type=int,   # 1000
                         help="the total number of env steps evaluate")
-    parser.add_argument('--dir_name', default="test_v4_Lateral_EMS", type=str)
+    parser.add_argument('--dir_name', default="test_v3_Lateral_EMS", type=str)
     parser.add_argument('--drl_model', default="sac", type=str, help='dqn, ddpg, td3, sac, a2c, ppo') 
-    parser.add_argument('--model_id', default='1', type=str) 
+    parser.add_argument('--model_id', default='10', type=str) 
+    parser.add_argument('--vehicles_density', default=1.5, type=float) 
     
     # reward coefficient  
     parser.add_argument('--w_center', default=1.0, type=float) 
