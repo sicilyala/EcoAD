@@ -72,5 +72,5 @@ if __name__ == "__main__":
     logger_dir = log_dir + drl_model.upper() + "_" + args.model_id    
     # replay the video/
     replay(env, drl_model=drl_model, logger_dir=logger_dir, 
-           replay_steps=args.replay_steps, sim_freq=args.sim_freq, vehicles_density = args.vehicles_density) 
+           replay_steps=args.replay_steps, sim_freq=args.sim_freq, vehicles_density=args.vehicles_density) 
     

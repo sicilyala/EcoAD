@@ -82,7 +82,7 @@ if __name__ == "__main__":
     del DRL_agent     
     # evaluation: Load and test the learned model  
     replay(env, drl_model=drl_model, logger_dir=logger_dir, 
-           replay_steps=args.replay_steps, sim_freq=args.sim_freq) 
+           replay_steps=args.replay_steps, sim_freq=args.sim_freq, vehicles_density=args.vehicles_density) 
     # change log dir 
     os.rename(log_dir+"/"+log_name, os.path.join(logger_dir, 'training.log'))
     extract_len_rew(logger_dir, 'training.log')       
