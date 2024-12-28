@@ -1,7 +1,6 @@
-# ignore files listed below
-
 *.pyc 
 /.idea/
+.vscode/
 
 /highway_env/highway_env.egg-info/
 /EcoHighway_DRL/
@@ -11,6 +10,6 @@ common/SAC_train.py
 common/DQN_train.py
 step_data.py
 /notes_train/
-.vscode/
 
+traffic_density.py
 
