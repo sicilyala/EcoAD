@@ -1,6 +1,7 @@
 *.pyc 
 /.idea/
 .vscode/
+.DS_Store
 
 /highway_env/highway_env.egg-info/
 /EcoHighway_DRL/
