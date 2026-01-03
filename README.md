@@ -17,14 +17,17 @@ The eco-driving strategy is crucial for hybrid electric vehicles to save energy 
 ## Citation
 
 ```BibTex
-@article{CHEN2025100309,
-title = {Eco-Driving Framework for Hybrid Electric Vehicles in Multi-Lane Scenarios by Using Deep Reinforcement Learning Methods},
-journal = {Green Energy and Intelligent Transportation},
-pages = {100309},
-year = {2025},
-issn = {2773-1537},
-doi = {https://doi.org/10.1016/j.geits.2025.100309},
-url = {https://www.sciencedirect.com/science/article/pii/S2773153725000593},
-author = {Weiqi Chen and Jiankun Peng and Yuhan Ma and Hongwen He and Tinghui Ren and Chunhai Wang},
+ @article{Chen_Peng_Ma_He_Ren_Wang_2026,
+title={Eco-driving framework for hybrid electric vehicles in multi-lane scenarios by using deep reinforcement learning methods},
+volume={5},
+ISSN={27731537},
+DOI={10.1016/j.geits.2025.100309},
+number={2},
+journal={Green Energy and Intelligent Transportation},
+author={Chen, Weiqi and Peng, Jiankun and Ma, Yuhan and He, Hongwen and Ren, Tinghui and Wang, Chunhai},
+year={2026},
+month=apr,
+pages={100309},
+language={en}
 }
 ```
